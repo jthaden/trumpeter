@@ -1,0 +1,17 @@
+<resources>
+    <string name="parse_app_id">jadibgKgQBjKhvYdPhptYCM0C2mTWIYkXeYKhsuq</string>
+    <string name="parse_client_key">AYj5VuAVO5eaCD2KTHR19BqJZiq0zA6xMMmAsj1d</string>
+    <string name="app_name">Proximate</string>
+    <string name="emailAddressString">Email address</string>
+    <string name="passwordString">Password</string>
+    <string name="confirmPasswordString">Confirm Password</string>
+    <string name="loginString">Login</string>
+    <string name="usernameString">Username</string>
+    <string name="createAccountString">Create an Account</string>
+    <string name="createYourAccountString">Create Your Account</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
