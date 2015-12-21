@@ -4,9 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 
 /**
@@ -18,6 +26,18 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class CreateAccountFragment extends Fragment {
+
+    private EditText mEmailEditText;
+    private EditText mUsernameEditText;
+    private EditText mPasswordEditText;
+    private EditText mConfirmPasswordEditText;
+    private Button mCreateAccountButton;
+
+    private String mEmail;
+    private String mUsername;
+    private String mPassword;
+    private String mConfirmPassword;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -64,10 +84,101 @@ public class CreateAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_create_account, container, false);
-
+        mEmailEditText = (EditText) view.findViewById(R.id.emailEditText);
+        mUsernameEditText = (EditText) view.findViewById(R.id.usernameEditText);
+        mPasswordEditText = (EditText) view.findViewById(R.id.passwordEditText);
+        mConfirmPasswordEditText = (EditText) view.findViewById(R.id.confirmPasswordEditText);
+        mCreateAccountButton = (Button) view.findViewById(R.id.createAccountButton);
 
         return view;
     }
+
+
+    @Override
+    public void onResume(){
+        mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAccount();
+
+            }
+        });
+    }
+
+    private void createAccount(){
+        mEmail = mEmailEditText.getText().toString();
+        mUsername = mUsernameEditText.getText().toString();
+        mPassword = mPasswordEditText.getText().toString();
+        mConfirmPassword = mConfirmPasswordEditText.getText().toString();
+        View focusView = checkInputs();
+        if (focusView != null) {
+            // There was an input error; don't attempt to create account, and focus view that is source of error
+            focusView.requestFocus();
+        } else {
+            ParseUser user = new ParseUser();
+            user.setEmail(mEmail);
+            user.setUsername(mUsername);
+            user.setPassword(mPassword);
+            user.signUpInBackground(new SignUpCallback() {
+                public void done(ParseException e) {
+                    if (e == null) {
+                        // log in automatically and travel to feed
+                        ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
+                            public void done(ParseUser user, ParseException e) {
+                                if (user != null) {
+                                    // switch to Feed activity with logged in user info (ParseUser param?)
+                                    //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
+                                    //feedIntent.putExtra("user", user);
+                                    //LoginActivity.this.startActivity(feedIntent);
+                                } else {
+                                    // this should never happen, since a user was just created successfully with this information
+                                }
+                            }
+                        });
+                    } else {
+                        // Sign up didn't succeed. Look at the ParseException
+                        // to figure out what went wrong
+                        // entry already taken?
+                    }
+                }
+            });
+        }
+
+    }
+
+    private View checkInputs(){
+        View focusView = null;
+
+        // check email for valid input
+        if (TextUtils.isEmpty(mEmail)){
+            mEmailEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = mEmailEditText;
+        } else if (!mEmail.contains("@")){
+            mEmailEditText.setError(getString(R.string.errorInvalidEmailString));
+            focusView = mEmailEditText;
+        }
+
+        // check password for valid input
+        if (TextUtils.isEmpty(mPassword)) {
+            mPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = mPasswordEditText;
+        } else if (mPassword.length() < 6){
+            mPasswordEditText.setError(getString(R.string.errorPasswordTooShortString));
+            focusView = mPasswordEditText;
+        }
+
+        //check confirm password for valid input
+        if (TextUtils.isEmpty(mConfirmPassword)) {
+            mConfirmPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = mConfirmPasswordEditText;
+        } else if (mPassword != null && !mConfirmPassword.equals(mPassword)){
+            mConfirmPasswordEditText.setError(getString(R.string.errorPasswordMismatchString));
+            focusView = mConfirmPasswordEditText;
+        }
+        return focusView;
+
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

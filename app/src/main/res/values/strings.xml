@@ -4,14 +4,20 @@
     <string name="app_name">Proximate</string>
     <string name="emailAddressString">Email address</string>
     <string name="passwordString">Password</string>
+    <string name="passwordGreaterString">Password (6 or more characters)</string>
     <string name="confirmPasswordString">Confirm Password</string>
-    <string name="loginString">Login</string>
+    <string name="loginString">Log In</string>
     <string name="usernameString">Username</string>
     <string name="createAccountString">Create an Account</string>
     <string name="createYourAccountString">Create Your Account</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="createAnAccountString">Create An Account</string>
+    <string name="errorFieldRequiredString">Error; field required.</string>
+    <string name="errorInvalidEmailString">Error; email provided is invalid.</string>
+    <string name="errorPasswordTooShortString">Error; password provided is too short.</string>
+    <string name="errorPasswordMismatchString">Error; passwords don't match.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

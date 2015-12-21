@@ -30,7 +30,7 @@
         android:ems="10"
         android:id="@+id/passwordEditText"
         android:password="true"
-        android:hint="@string/passwordString"
+        android:hint="@string/passwordGreaterString"
         android:layout_below="@+id/usernameEditText"
         android:layout_alignLeft="@+id/usernameEditText"
         android:layout_alignStart="@+id/usernameEditText"
@@ -40,7 +40,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
+        android:inputType="text"
         android:ems="10"
         android:password="true"
         android:hint="@string/usernameString"
@@ -58,7 +58,7 @@
         android:ems="10"
         android:password="true"
         android:hint="@string/confirmPasswordString"
-        android:id="@+id/editText2"
+        android:id="@+id/confirmPasswordEditText"
         android:layout_below="@+id/passwordEditText"
         android:layout_alignRight="@+id/passwordEditText"
         android:layout_alignEnd="@+id/passwordEditText"
@@ -71,7 +71,31 @@
         android:scaleType="fitXY"
         android:text="@string/createYourAccountString"
         android:id="@+id/createAccountButton"
-        android:layout_below="@+id/editText2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/confirmPasswordEditText"
+        android:layout_alignStart="@+id/confirmPasswordEditText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText3"
+        android:text="@string/createAnAccountString"
+        android:textSize="40sp"
+        android:background="@android:color/transparent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/create_account_elephant"
+        android:layout_alignRight="@+id/editText3"
+        android:layout_alignEnd="@+id/editText3"
+        android:layout_alignLeft="@+id/emailEditText"
+        android:layout_alignStart="@+id/emailEditText"
+        android:layout_below="@+id/editText3"
+        android:layout_above="@+id/emailEditText"
+        android:paddingTop="@dimen/activity_vertical_margin"/>
+
 </RelativeLayout>
