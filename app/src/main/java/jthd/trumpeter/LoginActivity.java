@@ -1,5 +1,8 @@
 package jthd.trumpeter;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,8 +10,10 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -57,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
                 logIn();
             }
         });
+        mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createAccount();
+
+            }
+        });
     }
 
 
@@ -82,6 +94,17 @@ public class LoginActivity extends AppCompatActivity {
                 }
             });
         }
+
+
+    }
+
+    private void createAccount(){
+        FragmentManager fManager = getFragmentManager();
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        CreateAccountFragment fragment = new CreateAccountFragment();
+        fTransaction.add(R.id.loginLayout, fragment);
+        // should only ever have this one fragment (and it should be recreated if button or back pressed), so no need to addToBackStack()
+        fTransaction.commit();
 
 
     }

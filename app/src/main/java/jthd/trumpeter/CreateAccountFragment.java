@@ -3,13 +3,14 @@ package jthd.trumpeter;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -129,7 +130,7 @@ public class CreateAccountFragment extends Fragment {
                                     // switch to Feed activity with logged in user info (ParseUser param?)
                                     //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
                                     //feedIntent.putExtra("user", user);
-                                    //LoginActivity.this.startActivity(feedIntent);
+                                    //getActivity().startActivity(feedIntent);
                                 } else {
                                     // this should never happen, since a user was just created successfully with this information
                                 }
