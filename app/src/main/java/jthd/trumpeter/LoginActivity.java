@@ -99,14 +99,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createAccount(){
-        FragmentManager fManager = getFragmentManager();
-        FragmentTransaction fTransaction = fManager.beginTransaction();
-        CreateAccountFragment fragment = new CreateAccountFragment();
-        fTransaction.add(R.id.loginLayout, fragment);
-        // should only ever have this one fragment (and it should be recreated if button or back pressed), so no need to addToBackStack()
-        fTransaction.commit();
-
-
+        Intent createAccIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+        LoginActivity.this.startActivity(createAccIntent);
     }
 
     private View checkInputs(){

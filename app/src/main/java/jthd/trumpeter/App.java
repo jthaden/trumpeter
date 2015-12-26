@@ -5,8 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
-import jthd.trumpeter.CreateAccountFragment;
-import jthd.trumpeter.LoginActivity;
+
 
 public class App extends Application {
 
