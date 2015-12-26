@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,20 +69,17 @@ public class CreateAccountActivity extends AppCompatActivity{
             focusView.requestFocus();
         } else {
             ParseUser user = new ParseUser();
-            user.setEmail(mEmail);
             user.setUsername(mUsername);
             user.setPassword(mPassword);
+            user.setEmail(mEmail);
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
-                        // log in automatically and travel to feed
-                        ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
+                        // Log in automatically and travel to feed
+                        ParseUser.logInInBackground(mUsername, mPassword, new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
-                                    // switch to Feed activity with logged in user info (ParseUser param?)
-                                    //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
-                                    //feedIntent.putExtra("user", user);
-                                    //getActivity().startActivity(feedIntent);
+                                    toFeed(user);
                                 } else {
                                     // this should never happen, since a user was just created successfully with this information
                                 }
@@ -89,14 +87,8 @@ public class CreateAccountActivity extends AppCompatActivity{
                         });
                     } else {
                         // Email address or username are already taken
-                        View focusView = null;
-                        if (e.getCode() == ParseException.USERNAME_TAKEN){
-                            mUsernameEditText.setError("Username is taken!");
-                            focusView = mUsernameEditText;
-                        } else if (e.getCode() == ParseException.EMAIL_TAKEN){
-                            mEmailEditText.setError("Email is taken!");
-                            focusView = mEmailEditText;
-                        }
+                        createAccountFailure(e);
+
                     }
                 }
             });
@@ -136,5 +128,27 @@ public class CreateAccountActivity extends AppCompatActivity{
         return focusView;
 
     }
+
+    private void toFeed(ParseUser user){
+        // switch to Feed activity with logged in user info (ParseUser param?)
+        //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
+        //feedIntent.putExtra("user", user);
+        //LoginActivity.this.startActivity(feedIntent);
+    }
+
+    private void createAccountFailure(ParseException e){
+        if (e.getCode() == ParseException.USERNAME_TAKEN){
+            mUsernameEditText.setError("Username is taken!");
+            mUsernameEditText.requestFocus();
+        } else if (e.getCode() == ParseException.EMAIL_TAKEN){
+            mEmailEditText.setError("Email is taken!");
+            mEmailEditText.requestFocus();
+        } else {
+            mEmailEditText.setError("Unknown error occurred!");
+            mEmailEditText.requestFocus();
+            Log.d("CreateAccountActivity", Integer.toString(e.getCode()));
+        }
+    }
+
 
 }

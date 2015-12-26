@@ -28,7 +28,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/emailEditText"
-        android:hint="@string/emailAddressString"
+        android:hint="@string/emailAddressOrUsernameString"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"

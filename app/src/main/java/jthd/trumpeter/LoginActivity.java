@@ -15,9 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 
+import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,13 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            // if user login is cached, skip login
-            //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
-            //feedIntent.putExtra("user", currentUser);
-            //LoginActivity.this.startActivity(feedIntent);
+            toFeed(currentUser);
         }
-
-
         setContentView(R.layout.activity_login);
         mEmailEditText = (EditText)findViewById(R.id.emailEditText);
         mPasswordEditText = (EditText)findViewById(R.id.passwordEditText);
@@ -81,31 +81,48 @@ public class LoginActivity extends AppCompatActivity {
             // There was an input error; don't attempt to log in, and focus view that is source of error
             focusView.requestFocus();
         } else {
-            ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
-                public void done(ParseUser user, ParseException e) {
-                    if (user != null) {
-                        // switch to Feed activity with logged in user info (ParseUser param?)
-                        //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
-                        //feedIntent.putExtra("user", user);
-                        //LoginActivity.this.startActivity(feedIntent);
-                    } else {
-                        // Login failed due to validation errors. Don't be specific about why.
-                        mEmailEditText.setError("Login failed.");
-                        mEmailEditText.requestFocus();
-                        mEmailEditText.setText("");
-                        mPasswordEditText.setText("");
+            // Retrieve username of account with provided email for login
+            if (mEmail.contains("@")) {
+                ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
+                query.whereEqualTo("email", mEmail);
+                query.getFirstInBackground(new GetCallback<ParseUser>() {
+                    @Override
+                    public void done(ParseUser object, ParseException e) {
+                        if (object != null) {
+                            String username = object.getUsername();
+                            ParseUser.logInInBackground(username, mPassword, new LogInCallback() {
+                                public void done(ParseUser user, ParseException e) {
+                                    if (user != null) {
+                                        toFeed(user);
+                                    } else {
+                                        // Login failed due to validation errors. Don't be specific about why.
+                                        loginFailure();
+                                    }
+                                }
+                            });
+                        } else {
+                            // Login failed because account doesn't exist (email has no matching username).
+                            loginFailure();
+                        }
                     }
-                }
-            });
+                });
+
+            } else {
+                // Username has been provided, login with username
+                ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
+                    public void done(ParseUser user, ParseException e) {
+                        if (user != null) {
+                            toFeed(user);
+                        } else {
+                            // Login failed due to validation errors. Don't be specific about why.
+                            loginFailure();
+                        }
+                    }
+                });
+            }
         }
 
-
-    }
-
-    private void createAccount(){
-        Intent createAccIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
-        LoginActivity.this.startActivity(createAccIntent);
-    }
+        }
 
     private View checkInputs(){
         View focusView = null;
@@ -127,5 +144,28 @@ public class LoginActivity extends AppCompatActivity {
         return focusView;
 
     }
+
+    private void loginFailure(){
+        mEmailEditText.setError("Login failed.");
+        mEmailEditText.requestFocus();
+        mEmailEditText.setText("");
+        mPasswordEditText.setText("");
+    }
+
+    private void toFeed(ParseUser user){
+        // switch to Feed activity with logged in user info (ParseUser param?)
+        //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
+        //feedIntent.putExtra("user", user);
+        //LoginActivity.this.startActivity(feedIntent);
+    }
+
+
+
+    private void createAccount(){
+        Intent createAccIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
+        LoginActivity.this.startActivity(createAccIntent);
+    }
+
+
 
 }
