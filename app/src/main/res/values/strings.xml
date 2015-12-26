@@ -2,9 +2,9 @@
     <string name="parse_app_id">jadibgKgQBjKhvYdPhptYCM0C2mTWIYkXeYKhsuq</string>
     <string name="parse_client_key">AYj5VuAVO5eaCD2KTHR19BqJZiq0zA6xMMmAsj1d</string>
     <string name="app_name">Trumpeter</string>
-    <string name="emailAddressString">Email address</string>
+    <string name="emailAddressString">Email Address</string>
     <string name="passwordString">Password</string>
-    <string name="passwordGreaterString">Password (6 or more characters)</string>
+    <string name="passwordGreaterString">Password (6+ characters)</string>
     <string name="confirmPasswordString">Confirm Password</string>
     <string name="loginString">Log In</string>
     <string name="usernameString">Username</string>
@@ -14,7 +14,7 @@
     <string name="action_settings">Settings</string>
     <string name="createAnAccountString">Create An Account</string>
     <string name="errorFieldRequiredString">Field required.</string>
-    <string name="errorInvalidEmailString">Email provided is invalid.</string>
+    <string name="errorInvalidEmailString">Not an email address.</string>
     <string name="errorPasswordTooShortString">Password provided is too short.</string>
     <string name="errorPasswordMismatchString">Passwords don\'t match.</string>
     <!-- TODO: Remove or change this placeholder text -->

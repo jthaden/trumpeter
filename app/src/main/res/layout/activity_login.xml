@@ -57,12 +57,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/LoginText"
         android:text="@string/loginString"
-        android:textSize="50dp"
+        android:textSize="50sp"
         android:background="@android:color/transparent"
 
 

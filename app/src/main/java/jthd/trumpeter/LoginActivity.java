@@ -78,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         mPassword = mPasswordEditText.getText().toString();
         View focusView = checkInputs();
         if (focusView != null) {
-            // There was an input error; don't attempt to log in,, and focus view that is source of error
+            // There was an input error; don't attempt to log in, and focus view that is source of error
             focusView.requestFocus();
         } else {
             ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
@@ -89,7 +89,11 @@ public class LoginActivity extends AppCompatActivity {
                         //feedIntent.putExtra("user", user);
                         //LoginActivity.this.startActivity(feedIntent);
                     } else {
-                        // Signup failed. Look at the ParseException to see what happened.
+                        // Login failed due to validation errors. Don't be specific about why.
+                        mEmailEditText.setError("Login failed.");
+                        mEmailEditText.requestFocus();
+                        mEmailEditText.setText("");
+                        mPasswordEditText.setText("");
                     }
                 }
             });

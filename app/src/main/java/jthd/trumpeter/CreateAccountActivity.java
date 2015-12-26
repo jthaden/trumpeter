@@ -88,9 +88,15 @@ public class CreateAccountActivity extends AppCompatActivity{
                             }
                         });
                     } else {
-                        // Sign up didn't succeed. Look at the ParseException
-                        // to figure out what went wrong
-                        // entry already taken?
+                        // Email address or username are already taken
+                        View focusView = null;
+                        if (e.getCode() == ParseException.USERNAME_TAKEN){
+                            mUsernameEditText.setError("Username is taken!");
+                            focusView = mUsernameEditText;
+                        } else if (e.getCode() == ParseException.EMAIL_TAKEN){
+                            mEmailEditText.setError("Email is taken!");
+                            focusView = mEmailEditText;
+                        }
                     }
                 }
             });
