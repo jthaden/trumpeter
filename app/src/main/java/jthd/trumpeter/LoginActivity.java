@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -41,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
-            toFeed(currentUser);
+            toFeed();
         }
         setContentView(R.layout.activity_login);
         mEmailEditText = (EditText)findViewById(R.id.emailEditText);
@@ -83,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             // Retrieve username of account with provided email for login
             if (mEmail.contains("@")) {
-                ParseQuery<ParseUser> query = ParseQuery.getQuery("User");
+                ParseQuery<ParseUser> query = ParseUser.getQuery();
                 query.whereEqualTo("email", mEmail);
                 query.getFirstInBackground(new GetCallback<ParseUser>() {
                     @Override
@@ -93,16 +95,18 @@ public class LoginActivity extends AppCompatActivity {
                             ParseUser.logInInBackground(username, mPassword, new LogInCallback() {
                                 public void done(ParseUser user, ParseException e) {
                                     if (user != null) {
-                                        toFeed(user);
+                                        Log.d("LoginActivity", "Login success");
+                                        toFeed();
                                     } else {
                                         // Login failed due to validation errors. Don't be specific about why.
-                                        loginFailure();
+                                        loginFailure(e);
                                     }
                                 }
                             });
                         } else {
                             // Login failed because account doesn't exist (email has no matching username).
-                            loginFailure();
+                            loginFailure(e);
+                            Log.d("LoginActivity", "no username found");
                         }
                     }
                 });
@@ -112,10 +116,11 @@ public class LoginActivity extends AppCompatActivity {
                 ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
-                            toFeed(user);
+                            Log.d("LoginActivity", "Login success");
+                            toFeed();
                         } else {
                             // Login failed due to validation errors. Don't be specific about why.
-                            loginFailure();
+                            loginFailure(e);
                         }
                     }
                 });
@@ -127,12 +132,9 @@ public class LoginActivity extends AppCompatActivity {
     private View checkInputs(){
         View focusView = null;
 
-        // check email for valid input
+        // check email/username for valid input
         if (TextUtils.isEmpty(mEmail)){
             mEmailEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mEmailEditText;
-        } else if (!mEmail.contains("@")){
-            mEmailEditText.setError(getString(R.string.errorInvalidEmailString));
             focusView = mEmailEditText;
         }
 
@@ -145,18 +147,18 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void loginFailure(){
+    private void loginFailure(ParseException e){
         mEmailEditText.setError("Login failed.");
         mEmailEditText.requestFocus();
         mEmailEditText.setText("");
         mPasswordEditText.setText("");
+        Log.d("LoginActivity", Integer.toString(e.getCode()));
     }
 
-    private void toFeed(ParseUser user){
-        // switch to Feed activity with logged in user info (ParseUser param?)
-        //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
-        //feedIntent.putExtra("user", user);
-        //LoginActivity.this.startActivity(feedIntent);
+    private void toFeed(){
+        // switch to Feed activity
+        Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
+        LoginActivity.this.startActivity(feedIntent);
     }
 
 

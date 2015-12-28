@@ -1,6 +1,7 @@
 package jthd.trumpeter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -68,6 +69,9 @@ public class CreateAccountActivity extends AppCompatActivity{
             // There was an input error; don't attempt to create account, and focus view that is source of error
             focusView.requestFocus();
         } else {
+            // Log out potential current user to prevent invalid session token issues (error 209)
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            currentUser.logOut();
             ParseUser user = new ParseUser();
             user.setUsername(mUsername);
             user.setPassword(mPassword);
@@ -79,7 +83,8 @@ public class CreateAccountActivity extends AppCompatActivity{
                         ParseUser.logInInBackground(mUsername, mPassword, new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
-                                    toFeed(user);
+                                    Log.d("CreateAccountActivity", "Login success");
+                                    toFeed();
                                 } else {
                                     // this should never happen, since a user was just created successfully with this information
                                 }
@@ -129,11 +134,10 @@ public class CreateAccountActivity extends AppCompatActivity{
 
     }
 
-    private void toFeed(ParseUser user){
-        // switch to Feed activity with logged in user info (ParseUser param?)
-        //Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
-        //feedIntent.putExtra("user", user);
-        //LoginActivity.this.startActivity(feedIntent);
+    private void toFeed(){
+        // switch to Feed activity
+        Intent feedIntent = new Intent(CreateAccountActivity.this, FeedActivity.class);
+        CreateAccountActivity.this.startActivity(feedIntent);
     }
 
     private void createAccountFailure(ParseException e){

@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="jthd.trumpeter.TrumpetFragment"
+                android:id="@+id/TrumpetLayout">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/backgroundTextView"
+        android:background="@drawable/separation_lines"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/submitTrumpetButton"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/submitTrumpetButton"
+        android:text="@string/whatsGoingOnString"
+        android:background="@android:color/transparent"
+        style="?android:attr/borderlessButtonStyle"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/backgroundTextView2"
+        android:layout_alignStart="@+id/backgroundTextView2"
+        android:typeface="serif"
+        android:textAllCaps="false"
+        android:textColor="@color/colorSubmitTrumpet"
+        android:layout_alignRight="@+id/backgroundTextView2"
+        android:layout_alignEnd="@+id/backgroundTextView2"
+        android:gravity="left|center_vertical"/>
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/anchor"
+        android:id="@+id/backgroundTextView2"
+        android:background="@drawable/trumpet_lines"
+        android:layout_marginBottom="-276dp"
+        android:layout_marginLeft="10dp"
+        android:paddingRight="250dp"/>
+
+
+    <View
+        android:id="@+id/anchor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

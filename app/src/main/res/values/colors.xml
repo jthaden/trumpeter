@@ -3,4 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorBackground">#303030</color>
+    <color name="colorSeparationLine">#616161</color>
+    <color name="colorText">#FFFFFF</color>
+    <color name="colorSubmitTrumpet">#909090</color>
 </resources>
