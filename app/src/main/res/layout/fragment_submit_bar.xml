@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="jthd.trumpeter.TrumpetFragment"
+             tools:context="jthd.trumpeter.SubmitBarFragment"
                 android:id="@+id/TrumpetLayout">
 
     <!-- TODO: Update blank fragment layout -->

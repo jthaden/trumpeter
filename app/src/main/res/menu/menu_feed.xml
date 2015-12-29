@@ -2,8 +2,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="jthd.trumpeter.FeedActivity">
-    <item android:id="@+id/action_settings"
+    <item android:id="@+id/settingsAction"
           android:title="@string/action_settings"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+      <item android:id="@+id/notificationsAction"
+            android:title="@string/notifications"
+            android:orderInCategory="10"
+            android:icon="@drawable/notifications_trumpet"
+            app:showAsAction="ifRoom"/>
 </menu>

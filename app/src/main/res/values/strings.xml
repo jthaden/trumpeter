@@ -18,10 +18,13 @@
     <string name="errorInvalidEmailString">Not an email address.</string>
     <string name="errorPasswordTooShortString">Password provided is too short.</string>
     <string name="errorPasswordMismatchString">Passwords don\'t match.</string>
-    <string name="whatsGoingOnString"><u>What\'s going on?</u></string>
+    <string name="whatsGoingOnString">What\'s going on?</string>
+    <string name="trumpetString">Trumpet</string>
+    <string name="notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_create_account">Create an Account</string>
     <string name="title_activity_feed">Feed Activity</string>
+    <string name="title_activity_submit_trumpet">Submit Trumpet Activity</string>
 
 </resources>

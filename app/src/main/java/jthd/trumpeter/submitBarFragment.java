@@ -1,8 +1,6 @@
 package jthd.trumpeter;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -15,12 +13,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link TrumpetFragment.OnFragmentInteractionListener} interface
+ * {@link submitBarFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TrumpetFragment#newInstance} factory method to
+ * Use the {@link submitBarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrumpetFragment extends Fragment {
+public class submitBarFragment extends Fragment {
 
     private Button mSubmitTrumpetButton;
 
@@ -42,11 +40,11 @@ public class TrumpetFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrumpetFragment.
+     * @return A new instance of fragment submitBarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrumpetFragment newInstance(String param1, String param2) {
-        TrumpetFragment fragment = new TrumpetFragment();
+    public static submitBarFragment newInstance(String param1, String param2) {
+        submitBarFragment fragment = new submitBarFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -54,7 +52,7 @@ public class TrumpetFragment extends Fragment {
         return fragment;
     }
 
-    public TrumpetFragment() {
+    public submitBarFragment() {
         // Required empty public constructor
     }
 
@@ -71,7 +69,7 @@ public class TrumpetFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_trumpet, container, false);
+        View view = inflater.inflate(R.layout.fragment_submit_trumpet_bar, container, false);
         mSubmitTrumpetButton = (Button) view.findViewById(R.id.submitTrumpetButton);
         //mSubmitTrumpetButton.setPaintFlags(mSubmitTrumpetButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         return view;
