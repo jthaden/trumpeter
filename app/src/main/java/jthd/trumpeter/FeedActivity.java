@@ -52,7 +52,7 @@ public class FeedActivity extends AppCompatActivity {
      * Launches the Submit Bar at the bottom of the layout that allows for users to travel to SubmitTrumpetActivity and "submit" Trumpets to Parse.
      */
     private void launchSubmitBarFragment(){
-        Fragment trumpetFragment = new SubmitBarFragmentTemp();
+        Fragment trumpetFragment = new SubmitBarFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.feedLayout, trumpetFragment);
         transaction.commit();

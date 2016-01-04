@@ -13,12 +13,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SubmitBarFragmentTemp.OnFragmentInteractionListener} interface
+ * {@link SubmitBarFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SubmitBarFragmentTemp#newInstance} factory method to
+ * Use the {@link SubmitBarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SubmitBarFragmentTemp extends Fragment {
+public class SubmitBarFragment extends Fragment {
 
     private Button mSubmitTrumpetButton;
 
@@ -40,11 +40,11 @@ public class SubmitBarFragmentTemp extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment SubmitBarFragmentTemp.
+     * @return A new instance of fragment SubmitBarFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SubmitBarFragmentTemp newInstance(String param1, String param2) {
-        SubmitBarFragmentTemp fragment = new SubmitBarFragmentTemp();
+    public static SubmitBarFragment newInstance(String param1, String param2) {
+        SubmitBarFragment fragment = new SubmitBarFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -52,7 +52,7 @@ public class SubmitBarFragmentTemp extends Fragment {
         return fragment;
     }
 
-    public SubmitBarFragmentTemp() {
+    public SubmitBarFragment() {
         // Required empty public constructor
     }
 
