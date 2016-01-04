@@ -39,8 +39,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // If a user is cached, skip straight to FeedActivity
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             toFeed();
@@ -50,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordEditText = (EditText)findViewById(R.id.passwordEditText);
         mLoginButton = (Button)findViewById(R.id.loginButton);
         mCreateAccountButton = (Button)findViewById(R.id.createAccountButton);
-        // login with facebook button here
+        // TODO login with facebook button here
 
     }
 
@@ -74,7 +76,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Logs the user into Parse using the provided information. If username is provided, simply log in with username. If email is provided, lookup
+     * associated username and log in. If login completes successfully, launch FeedActivity. If login fails, display relevant failure information.
+     */
     private void logIn(){
         mEmail = mEmailEditText.getText().toString();
         mPassword = mPasswordEditText.getText().toString();
@@ -129,6 +134,11 @@ public class LoginActivity extends AppCompatActivity {
 
         }
 
+    /**
+     * Checks the EditText inputs for email/username and password for validity; in this case, ensures that they are not empty. If a field is invalid,
+     * displays error message and returns appropriate View for focusing.
+     * @return Returns the View that caused the input error.
+     */
     private View checkInputs(){
         View focusView = null;
 
@@ -147,22 +157,30 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Displays error messages and sets focus if Parse login fails.
+     * @param e For debugging, the ParseException associated with the login failure.
+     */
     private void loginFailure(ParseException e){
         mEmailEditText.setError("Login failed.");
         mEmailEditText.requestFocus();
         mEmailEditText.setText("");
         mPasswordEditText.setText("");
-        Log.d("LoginActivity", Integer.toString(e.getCode()));
+        //Log.d("LoginActivity", Integer.toString(e.getCode()));
     }
 
+    /**
+     * Launches FeedActivity.
+     */
     private void toFeed(){
-        // switch to Feed activity
         Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
         LoginActivity.this.startActivity(feedIntent);
     }
 
 
-
+    /**
+     * Launches CreateAccountActivity.
+     */
     private void createAccount(){
         Intent createAccIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
         LoginActivity.this.startActivity(createAccIntent);

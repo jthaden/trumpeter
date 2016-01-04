@@ -59,6 +59,10 @@ public class CreateAccountActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * Creates a ParseUser account with the given information. If success, log in user and launch FeedActivity. If failure, display information
+     * relevant to that failure.
+     */
     private void createAccount(){
         mEmail = mEmailEditText.getText().toString();
         mUsername = mUsernameEditText.getText().toString();
@@ -101,6 +105,11 @@ public class CreateAccountActivity extends AppCompatActivity{
 
     }
 
+    /**
+     * Checks the EditText inputs for email, username, password, and confirm password for validity. If a field is invalid, displays error message and
+     * returns appropriate View for focusing.
+     * @return Returns the View that caused the input error.
+     */
     private View checkInputs(){
         View focusView = null;
 
@@ -134,12 +143,10 @@ public class CreateAccountActivity extends AppCompatActivity{
 
     }
 
-    private void toFeed(){
-        // switch to Feed activity
-        Intent feedIntent = new Intent(CreateAccountActivity.this, FeedActivity.class);
-        CreateAccountActivity.this.startActivity(feedIntent);
-    }
-
+    /**
+     * If ParseUser creation fails, use associated ParseException to determine why and display this information to the user.
+     * @param e ParseException associated with account creation failure.
+     */
     private void createAccountFailure(ParseException e){
         if (e.getCode() == ParseException.USERNAME_TAKEN){
             mUsernameEditText.setError("Username is taken!");
@@ -153,6 +160,16 @@ public class CreateAccountActivity extends AppCompatActivity{
             Log.d("CreateAccountActivity", Integer.toString(e.getCode()));
         }
     }
+
+    /**
+     * Launches FeedActivity.
+     */
+    private void toFeed(){
+        Intent feedIntent = new Intent(CreateAccountActivity.this, FeedActivity.class);
+        CreateAccountActivity.this.startActivity(feedIntent);
+    }
+
+
 
 
 }

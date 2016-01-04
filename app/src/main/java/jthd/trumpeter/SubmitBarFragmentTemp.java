@@ -13,12 +13,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link submitBarFragment.OnFragmentInteractionListener} interface
+ * {@link SubmitBarFragmentTemp.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link submitBarFragment#newInstance} factory method to
+ * Use the {@link SubmitBarFragmentTemp#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class submitBarFragment extends Fragment {
+public class SubmitBarFragmentTemp extends Fragment {
 
     private Button mSubmitTrumpetButton;
 
@@ -40,11 +40,11 @@ public class submitBarFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment submitBarFragment.
+     * @return A new instance of fragment SubmitBarFragmentTemp.
      */
     // TODO: Rename and change types and number of parameters
-    public static submitBarFragment newInstance(String param1, String param2) {
-        submitBarFragment fragment = new submitBarFragment();
+    public static SubmitBarFragmentTemp newInstance(String param1, String param2) {
+        SubmitBarFragmentTemp fragment = new SubmitBarFragmentTemp();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -52,7 +52,7 @@ public class submitBarFragment extends Fragment {
         return fragment;
     }
 
-    public submitBarFragment() {
+    public SubmitBarFragmentTemp() {
         // Required empty public constructor
     }
 
@@ -69,7 +69,7 @@ public class submitBarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_submit_trumpet_bar, container, false);
+        View view = inflater.inflate(R.layout.fragment_submit_bar, container, false);
         mSubmitTrumpetButton = (Button) view.findViewById(R.id.submitTrumpetButton);
         //mSubmitTrumpetButton.setPaintFlags(mSubmitTrumpetButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         return view;
@@ -85,6 +85,9 @@ public class submitBarFragment extends Fragment {
         });
     }
 
+    /**
+     * Launches submitTrumpetActivity.
+     */
     private void toSubmitTrumpet(){
         // switch to SubmitTrumpet activity (currently assuming it will be an activity)
         // Intent submitTrumpetIntent = new Intent(getActivity(), SubmitTrumpetActivity.class);

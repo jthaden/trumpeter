@@ -8,7 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
 
@@ -22,6 +28,16 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
         mTitleBar = (Toolbar) findViewById(R.id.titleBar);
         setSupportActionBar(mTitleBar);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> trumpetList, ParseException e) {
+                if (e == null) {
+                    // Trumpets retrieved, now decide how to display them
+                } else {
+
+                }
+            }
+        });
     }
 
     @Override
@@ -32,8 +48,11 @@ public class FeedActivity extends AppCompatActivity {
         launchSubmitBarFragment();
     }
 
+    /**
+     * Launches the Submit Bar at the bottom of the layout that allows for users to travel to SubmitTrumpetActivity and "submit" Trumpets to Parse.
+     */
     private void launchSubmitBarFragment(){
-        Fragment trumpetFragment = new SubmitBarFragment();
+        Fragment trumpetFragment = new SubmitBarFragmentTemp();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.replace(R.id.feedLayout, trumpetFragment);
         transaction.commit();

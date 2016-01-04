@@ -21,6 +21,10 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private final int MAX_CHAR = 160;
@@ -58,6 +62,10 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Creates a ParseObject of class "Trumpet" with the user-provided information and submitting ParseUser. Submission date automatically saved in
+     * "createdAt" field.
+     */
     private void submitTrumpet(){
         mTrumpet = mTrumpetEditText.getText().toString();
         ParseObject trumpet = new ParseObject("Trumpet");
@@ -66,6 +74,9 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         trumpet.saveInBackground();
     }
 
+    /**
+     * Sets the user's profile picture at the top of the layout. If no profile picture uploaded, use default.
+     */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
         if (mUser.get("profilePicture") != null){
@@ -82,6 +93,9 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Watches the trumpetEditText and updates the charCountTextView with the remaining number of allowed characters whenever text is entered
+     */
     private final TextWatcher mTextEditorWatcher = new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
@@ -95,25 +109,4 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_submit_trumpet, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
