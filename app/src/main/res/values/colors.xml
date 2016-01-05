@@ -7,4 +7,5 @@
     <color name="colorPrimaryGray">#5A595B</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorSubmitTrumpet">#909090</color>
+    <color name="colorTrumpetText">#C1C1C1</color>
 </resources>

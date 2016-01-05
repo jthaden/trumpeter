@@ -1,3 +1,5 @@
+package jthd.trumpeter;
+
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;

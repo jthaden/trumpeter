@@ -22,22 +22,15 @@ public class FeedActivity extends AppCompatActivity {
 
     private Toolbar mTitleBar;
 
+    private FeedManager mFeedManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
         mTitleBar = (Toolbar) findViewById(R.id.titleBar);
         setSupportActionBar(mTitleBar);
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            public void done(List<ParseObject> trumpetList, ParseException e) {
-                if (e == null) {
-                    // Trumpets retrieved, now decide how to display them
-                } else {
-
-                }
-            }
-        });
+        mFeedManager = new FeedManager();
     }
 
     @Override

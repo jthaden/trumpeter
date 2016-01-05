@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:id="@+id/profilePictureView"
+        android:src="@drawable/default_profile_picture"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:id="@+id/usernameTextView"
+        android:gravity="center|left"
+        android:text="\@jessethd"
+        android:paddingLeft="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorText"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/profilePictureView"
+        android:textStyle="bold"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:text="&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, um.&quot;"
+        android:id="@+id/trumpetTextView"
+        android:layout_below="@+id/usernameTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/profilePictureView"
+        android:layout_toEndOf="@+id/profilePictureView"
+        android:paddingLeft="8dp"
+        android:textColor="@color/colorTrumpetText"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:id="@+id/replyButton"
+        android:src="@drawable/reply_arrow"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:paddingLeft="8dp"
+        android:layout_alignLeft="@+id/trumpetTextView"
+        android:layout_alignStart="@+id/trumpetTextView"
+        android:layout_below="@+id/trumpetTextView"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="23dp"
+        android:id="@+id/retrumpetButton"
+        android:src="@drawable/retrumpet"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:layout_toLeftOf="@+id/likeButton"
+        android:layout_toStartOf="@+id/likeButton"
+        android:layout_alignBottom="@+id/replyButton"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="15dp"
+        android:id="@+id/likeButton"
+        android:src="@drawable/like"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:layout_marginLeft="54dp"
+        android:layout_marginStart="54dp"
+        android:paddingTop="2dp"
+        android:layout_below="@+id/trumpetTextView"
+        android:layout_toRightOf="@+id/usernameTextView"
+        android:layout_toEndOf="@+id/usernameTextView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="30"
+        android:id="@+id/retrumpetCountTextView"
+        android:textColor="#FFFFFF"
+        android:paddingBottom="3dp"
+        android:paddingLeft="2dp"
+        android:layout_alignBottom="@+id/retrumpetButton"
+        android:layout_toRightOf="@+id/usernameTextView"
+        android:layout_toEndOf="@+id/usernameTextView"
+        android:layout_below="@+id/trumpetTextView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="55"
+        android:id="@+id/likeCountTextView"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="1dp"
+        android:layout_alignTop="@+id/likeButton"
+        android:layout_toRightOf="@+id/likeButton"
+        android:layout_toEndOf="@+id/likeButton"
+        android:layout_below="@+id/trumpetTextView"/>
+
+</RelativeLayout>

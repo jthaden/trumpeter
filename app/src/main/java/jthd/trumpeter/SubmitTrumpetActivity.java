@@ -71,6 +71,9 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         ParseObject trumpet = new ParseObject("Trumpet");
         trumpet.put("text", mTrumpet);
         trumpet.put("user", mUser);
+        trumpet.put("retrumpet", false);
+        trumpet.put("retrumpets", 0);
+        trumpet.put("likes", 0);
         trumpet.saveInBackground();
     }
 
