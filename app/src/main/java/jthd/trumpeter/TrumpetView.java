@@ -22,7 +22,14 @@ import com.parse.ParseUser;
 
 public class TrumpetView extends RelativeLayout {
 
-    private ParseUser mUser;
+    private ParseObject trumpet;
+    private ParseUser trumpetUser;
+    private String username;
+    private String text;
+    private String retrumpeter;
+    private Boolean retrumpet;
+    private int retrumpets;
+    private int likes;
 
     private TextView mUsernameTextView;
     private TextView mTrumpetTextView;
@@ -70,18 +77,19 @@ public class TrumpetView extends RelativeLayout {
 
     /**
      * Retrieves data from provided Trumpet ParseObject and loads it into trumpetView's Views. Displays or hides retrumpetTextView based on retrumpet status.
-     * @param trumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
+     * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
      */
-    public void showTrumpet(ParseObject trumpet){
-        mUser = (ParseUser)trumpet.get("user");
-        String username = mUser.getUsername();
-        String text = (String)trumpet.get("text");
-        boolean retrumpet = (boolean)trumpet.get("retrumpet");
-        int retrumpets = (int)trumpet.get("retrumpets");
-        int likes = (int)trumpet.get("likes");
+    public void showTrumpet(ParseObject showTrumpet){
+        trumpet = showTrumpet;
+        trumpetUser = (ParseUser)trumpet.get("user");
+        username = trumpetUser.getUsername();
+        text = (String)trumpet.get("text");
+        retrumpet = (boolean)trumpet.get("retrumpet");
+        retrumpets = (int)trumpet.get("retrumpets");
+        likes = (int)trumpet.get("likes");
         // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
         if (retrumpet){
-            String retrumpeter = (String)trumpet.get("retrumpeter");
+            retrumpeter = (String)trumpet.get("retrumpeter");
             mRetrumpetTextView.setText("Retrumpeted by " + retrumpeter);
         } else {
             mRetrumpetTextView.setVisibility(View.GONE);
@@ -91,6 +99,26 @@ public class TrumpetView extends RelativeLayout {
         mTrumpetTextView.setText(text);
         mRetrumpetCountTextView.setText(retrumpets);
         mLikeCountTextView.setText(likes);
+        mReplyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mRetrumpetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRetrumpetCountTextView.setText(retrumpets + 1);
+                UpdateTrumpetManager.updateRetrumpetCount(trumpet.get("trumpetID"));
+            }
+        });
+        mLikeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLikeCountTextView.setText(likes + 1);
+                UpdateTrumpetManage.updateLikeCount(trumpet.get("trumpetID"));
+            }
+        });
 
 
 
@@ -101,8 +129,8 @@ public class TrumpetView extends RelativeLayout {
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (mUser.get("profilePicture") != null){
-            ParseFile profilePicture = (ParseFile) mUser.get("profilePicture");
+        if (mTrumpetUser.get("profilePicture") != null){
+            ParseFile profilePicture = (ParseFile) mTrumpetUser.get("profilePicture");
             profilePicture.getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
