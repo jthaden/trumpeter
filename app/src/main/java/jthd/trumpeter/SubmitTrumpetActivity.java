@@ -6,8 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +19,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private final int MAX_CHAR = 160;
@@ -34,16 +28,21 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
     private Button mSubmitTrumpetButton;
     private EditText mTrumpetEditText;
     private ImageButton mBackButton;
-    private ImageView mProfilePictureView;
+    private ImageView mProfilePictureImageView;
     private TextView mUsernameTextView;
     private TextView mCharCountTextView;
 
-    private String mTrumpet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_trumpet);
+        mProfilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
+        mSubmitTrumpetButton = (Button) findViewById(R.id.submitTrumpetButton);
+        mBackButton = (ImageButton) findViewById(R.id.backButton);
+        mUsernameTextView = (TextView) findViewById(R.id.usernameTextView);
+        mCharCountTextView = (TextView) findViewById(R.id.charCountTextView);
+        mTrumpetEditText = (EditText) findViewById(R.id.trumpetEditText);
     }
 
     @Override
@@ -67,11 +66,12 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
      * "createdAt" field.
      */
     private void submitTrumpet(){
-        mTrumpet = mTrumpetEditText.getText().toString();
+        String trumpetText = mTrumpetEditText.getText().toString();
         ParseObject trumpet = new ParseObject("Trumpet");
         trumpet.put("text", mTrumpet);
         trumpet.put("user", mUser);
         trumpet.put("retrumpet", false);
+        trumpet.put("retrumpeter", null);
         trumpet.put("retrumpets", 0);
         trumpet.put("likes", 0);
         trumpet.saveInBackground();
@@ -88,11 +88,11 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
                 @Override
                 public void done(byte[] data, ParseException e) {
                     Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    mProfilePictureView.setImageBitmap(bmp);
+                    mProfilePictureImageView.setImageBitmap(bmp);
                 }
             });
         } else {
-            // mProfilePictureView.setImageResource(R.drawable.default_profile_picture); now defaults to default profile picture
+            mProfilePictureImageView.setImageResource(R.drawable.default_profile_picture);
         }
     }
 

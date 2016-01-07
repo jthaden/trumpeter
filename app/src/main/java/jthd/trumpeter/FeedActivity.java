@@ -7,30 +7,27 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ListView;
 
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 public class FeedActivity extends AppCompatActivity {
 
     private ParseUser mUser;
 
     private Toolbar mTitleBar;
+    private ListView mFeedListView;
 
-    private FeedManager mFeedManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
         mTitleBar = (Toolbar) findViewById(R.id.titleBar);
+        mFeedListView = (ListView) findViewById(R.id.feedListView);
+        // TODO Is this constructor acceptable? Should context be this or context provided by App?
+        mFeedListView.setAdapter(new FeedAdapter(this, R.layout.trumpetView_layout));
         setSupportActionBar(mTitleBar);
-        mFeedManager = new FeedManager();
     }
 
     @Override
@@ -39,6 +36,7 @@ public class FeedActivity extends AppCompatActivity {
         mUser = ParseUser.getCurrentUser();
         Log.d("FeedActivity", mUser.getEmail());
         launchSubmitBarFragment();
+
     }
 
     /**
