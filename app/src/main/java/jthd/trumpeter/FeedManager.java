@@ -9,6 +9,10 @@ import com.parse.ParseQuery;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * The FeedManager class decides which Trumpets to display in FeedActivity.
+ */
+
 public class FeedManager {
 
     private final int MAX_TRUMPETS = 1000;

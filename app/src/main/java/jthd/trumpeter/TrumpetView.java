@@ -16,8 +16,10 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+
 /**
- * Custom View class that manages the layout for each Trumpet, or item in the FeedActivity ListView.
+ * Custom View class that manages the layout for each Trumpet, or item in the FeedActivity ListView. Performs strictly the "View" function
+ * while the Managers (SubmitTrumpetManager and UpdateTrumpetManager) handle the Model.
  */
 
 public class TrumpetView extends RelativeLayout {
@@ -77,6 +79,7 @@ public class TrumpetView extends RelativeLayout {
 
     /**
      * Retrieves data from provided Trumpet ParseObject and loads it into trumpetView's Views. Displays or hides retrumpetTextView based on retrumpet status.
+     * Sets listeners for buttons - TODO Hope this works; it SHOULD. If it doesn't, WILL work with listener in getView(); would need to use viewHolder model instead
      * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
      */
     public void showTrumpet(ParseObject showTrumpet){
@@ -109,14 +112,15 @@ public class TrumpetView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 mRetrumpetCountTextView.setText(retrumpets + 1);
-                UpdateTrumpetManager.updateRetrumpetCount(trumpet.get("trumpetID"));
+                // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
+                SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
             }
         });
         mLikeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mLikeCountTextView.setText(likes + 1);
-                UpdateTrumpetManage.updateLikeCount(trumpet.get("trumpetID"));
+                UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });
 
@@ -129,8 +133,8 @@ public class TrumpetView extends RelativeLayout {
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (mTrumpetUser.get("profilePicture") != null){
-            ParseFile profilePicture = (ParseFile) mTrumpetUser.get("profilePicture");
+        if (trumpetUser.get("profilePicture") != null){
+            ParseFile profilePicture = (ParseFile) trumpetUser.get("profilePicture");
             profilePicture.getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {

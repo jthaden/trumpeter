@@ -34,7 +34,7 @@ public final class SubmitTrumpetManager {
     }
 
     public static void submitRetrumpet(ParseObject trumpet, String retrumpeter){
-        SubmitTrumpetManager.updateRetrumpetCount(trumpet.getInt("trumpetID"));
+        UpdateTrumpetManager.updateRetrumpetCount(trumpet.getInt("trumpetID"));
         ParseObject retrumpet = new ParseObject("Trumpet");
         trumpet.put("text", trumpet.get("text"));
         trumpet.put("user", trumpet.get("user"));
@@ -67,12 +67,5 @@ public final class SubmitTrumpetManager {
         });
         return mLastTrumpetID;
     }
-
-    // TODO This really ought to be a in an UpdateTrumpetManager class that has updateRetrumpet and updateLikes
-    private static int updateRetrumpetCount(int trumpetID){
-        // find all Trumpets with given ID and increment their "retrumpets" count. Still need to handle the +1 clientside when retrumpet button is pressed
-    }
-
-
 
 }

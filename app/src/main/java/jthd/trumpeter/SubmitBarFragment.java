@@ -1,6 +1,7 @@
 package jthd.trumpeter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -89,9 +90,8 @@ public class SubmitBarFragment extends Fragment {
      * Launches submitTrumpetActivity.
      */
     private void toSubmitTrumpet(){
-        // switch to SubmitTrumpet activity (currently assuming it will be an activity)
-        // Intent submitTrumpetIntent = new Intent(getActivity(), SubmitTrumpetActivity.class);
-        // getActivity().startActivity(submitTrumpetIntent);
+        Intent submitTrumpetIntent = new Intent(getActivity(), SubmitTrumpetActivity.class);
+        getActivity().startActivity(submitTrumpetIntent);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
