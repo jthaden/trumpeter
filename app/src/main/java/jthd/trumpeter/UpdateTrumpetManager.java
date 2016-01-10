@@ -11,7 +11,7 @@ import java.util.List;
 
 
 // TODO TrumpetUpdateManager?
-public class UpdateTrumpetManager {
+public final class UpdateTrumpetManager {
 
     private UpdateTrumpetManager(){
 

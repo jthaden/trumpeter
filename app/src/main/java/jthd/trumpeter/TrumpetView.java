@@ -1,8 +1,10 @@
 package jthd.trumpeter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -138,13 +140,17 @@ public class TrumpetView extends RelativeLayout {
             profilePicture.getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    mProfilePictureImageView.setImageBitmap(bmp);
+                    Bitmap optimizedImage = ImageManager.decodeSampledBitmapFromByteArray(data, 60, 60);
+                    mProfilePictureImageView.setImageBitmap(optimizedImage);
                 }
             });
         } else {
-            mProfilePictureImageView.setImageResource(R.drawable.default_profile_picture);
+            Bitmap optimizedDefaultImage = ImageManager.decodeSampledBitmapFromResource(getResources(), R.drawable.default_profile_picture, 60, 60);
+            mProfilePictureImageView.setImageBitmap(optimizedDefaultImage);
         }
     }
+
+
+
 
 }

@@ -72,8 +72,8 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
             profilePicture.getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                    mProfilePictureImageView.setImageBitmap(bmp);
+                    Bitmap optimizedImage = ImageManager.decodeSampledBitmapFromByteArray(data, 60, 60);
+                    mProfilePictureImageView.setImageBitmap(optimizedImage);
                 }
             });
         } else {
