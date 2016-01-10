@@ -2,8 +2,9 @@
 <jthd.trumpeter.TrumpetView
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:id="@+id/feedItemLayout">
+                android:layout_height="wrap_content"
+                android:id="@+id/feedItemLayout"
+                android:orientation="vertical">
 
     <ImageView
         android:layout_width="60dp"

@@ -29,11 +29,13 @@
         </activity>
         <activity
             android:name=".FeedActivity"
-            android:label="@string/title_activity_feed" >
+            android:label="@string/title_activity_feed"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".SubmitTrumpetActivity"
-            android:label="@string/title_activity_submit_trumpet" >
+            android:label="@string/title_activity_submit_trumpet"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

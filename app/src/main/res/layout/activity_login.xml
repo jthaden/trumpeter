@@ -77,5 +77,6 @@
         android:layout_below="@+id/LoginText"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/emailEditText"
-        android:paddingTop="@dimen/activity_vertical_margin"/>
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="8dp"/>
 </RelativeLayout>

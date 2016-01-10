@@ -1,30 +1,20 @@
 package jthd.trumpeter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.LogInCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -46,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null) {
             toFeed();
+            Log.d("LoginActivity", "boop");
         }
         setContentView(R.layout.activity_login);
         mEmailEditText = (EditText)findViewById(R.id.emailEditText);
@@ -69,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccount();
+                toCreateAccount();
 
             }
         });
@@ -81,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
      * associated username and log in. If login completes successfully, launch FeedActivity. If login fails, display relevant failure information.
      */
     private void logIn(){
+        // Log out potential current user to prevent invalid session token issues (error 209)
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.logOut();
         mEmail = mEmailEditText.getText().toString();
         mPassword = mPasswordEditText.getText().toString();
         View focusView = checkInputs();
@@ -181,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Launches CreateAccountActivity.
      */
-    private void createAccount(){
+    private void toCreateAccount(){
         Intent createAccIntent = new Intent(LoginActivity.this, CreateAccountActivity.class);
         LoginActivity.this.startActivity(createAccIntent);
     }

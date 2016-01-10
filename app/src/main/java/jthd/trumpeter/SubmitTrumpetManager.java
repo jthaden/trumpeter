@@ -11,7 +11,7 @@ import com.parse.ParseUser;
 
 public final class SubmitTrumpetManager {
 
-    private static int mLastTrumpetID;
+    private static int lastTrumpetID;
 
     private SubmitTrumpetManager(){
 
@@ -26,7 +26,7 @@ public final class SubmitTrumpetManager {
         trumpet.put("text", text);
         trumpet.put("user", user);
         trumpet.put("retrumpet", false);
-        trumpet.put("retrumpeter", null);
+        //trumpet.put("retrumpeter", ""); Should default to empty "", right?
         trumpet.put("retrumpets", 0);
         trumpet.put("likes", 0);
         trumpet.put("trumpetID", SubmitTrumpetManager.getNextTrumpetID());
@@ -57,7 +57,7 @@ public final class SubmitTrumpetManager {
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject trumpetCounter, ParseException e) {
                 if (e == null) {
-                    mLastTrumpetID = trumpetCounter.getInt("nextTrumpetID");
+                    lastTrumpetID = trumpetCounter.getInt("nextTrumpetID");
                     trumpetCounter.increment("nextTrumpetID");
                     trumpetCounter.saveInBackground();
                 } else {
@@ -65,7 +65,7 @@ public final class SubmitTrumpetManager {
                 }
             }
         });
-        return mLastTrumpetID;
+        return lastTrumpetID;
     }
 
 }
