@@ -88,8 +88,8 @@ public class TrumpetView extends RelativeLayout {
         username = trumpetUser.getUsername();
         text = (String)trumpet.get("text");
         retrumpet = (boolean)trumpet.get("retrumpet");
-        retrumpets = (int)trumpet.get("retrumpets");
-        likes = (int)trumpet.get("likes");
+        retrumpets = trumpet.getInt("retrumpets");
+        likes = trumpet.getInt("likes");
         // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
         if (retrumpet){
             retrumpeter = (String)trumpet.get("retrumpeter");
@@ -100,8 +100,8 @@ public class TrumpetView extends RelativeLayout {
         setProfilePicture();
         mUsernameTextView.setText(username);
         mTrumpetTextView.setText(text);
-        mRetrumpetCountTextView.setText(retrumpets);
-        mLikeCountTextView.setText(likes);
+        mRetrumpetCountTextView.setText(Integer.toString(retrumpets));
+        mLikeCountTextView.setText(Integer.toString(likes));
         mReplyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +111,7 @@ public class TrumpetView extends RelativeLayout {
         mRetrumpetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRetrumpetCountTextView.setText(retrumpets + 1);
+                mRetrumpetCountTextView.setText(Integer.toString(retrumpets + 1));
                 // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
                 SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
             }
@@ -119,7 +119,7 @@ public class TrumpetView extends RelativeLayout {
         mLikeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLikeCountTextView.setText(likes + 1);
+                mLikeCountTextView.setText(Integer.toString(likes + 1));
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });

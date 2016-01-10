@@ -24,7 +24,6 @@ public class FeedAdapter extends ArrayAdapter<ParseObject> {
     private Context context;
 
 
-    // TODO Why this constructor?
 
     /**
      * This constructor currently allows for the Adapter to be used in other activities provided a different context, but I have no plans to do this.

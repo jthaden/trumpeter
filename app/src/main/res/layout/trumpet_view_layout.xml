@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jthd.trumpeter.TrumpetView
                 xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/feedItemLayout"
                 android:orientation="vertical">
 
     <ImageView
+        tools:src="@drawable/default_profile_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:id="@+id/profilePictureImageView"
-        android:src="@drawable/default_profile_picture"
         android:layout_below="@+id/retrumpetTextView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
     <TextView
+        tools:text="\@jessethd"
         android:layout_width="120dp"
         android:layout_height="25dp"
         android:id="@+id/usernameTextView"
         android:gravity="center|left"
-        android:text="\@jessethd"
         android:paddingLeft="8dp"
         android:textSize="16sp"
         android:textColor="@color/colorText"
         android:textStyle="bold"
-
         android:layout_below="@+id/retrumpetTextView"
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"/>
 
     <TextView
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, um."
         android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:text="&quot;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, um.&quot;"
+        android:layout_height="wrap_content"
         android:id="@+id/trumpetTextView"
         android:layout_below="@+id/usernameTextView"
         android:layout_alignParentRight="true"
@@ -43,23 +43,25 @@
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"
         android:paddingLeft="8dp"
-        android:textColor="@color/colorTrumpetText"/>
+        android:textColor="@color/colorTrumpetText"
+        />
 
     <ImageButton
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="20dp"
         android:id="@+id/replyButton"
         android:src="@drawable/reply_arrow"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:background="#00FFFFFF"
-        android:paddingLeft="8dp"
+        android:paddingLeft="0dp"
         android:layout_alignLeft="@+id/trumpetTextView"
         android:layout_alignStart="@+id/trumpetTextView"
-        android:layout_below="@+id/trumpetTextView"/>
+        android:layout_below="@+id/trumpetTextView"
+        android:paddingBottom="2dp"/>
 
     <ImageButton
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="23dp"
         android:id="@+id/retrumpetButton"
         android:src="@drawable/retrumpet"
@@ -86,9 +88,9 @@
         android:layout_toEndOf="@+id/usernameTextView"/>
 
     <TextView
+        tools:text="30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="30"
         android:id="@+id/retrumpetCountTextView"
         android:textColor="#FFFFFF"
         android:paddingBottom="3dp"
@@ -99,9 +101,9 @@
         android:layout_below="@+id/trumpetTextView"/>
 
     <TextView
+        tools:text="55"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="55"
         android:id="@+id/likeCountTextView"
         android:textColor="#FFFFFF"
         android:paddingLeft="1dp"
@@ -111,9 +113,9 @@
         android:layout_below="@+id/trumpetTextView"/>
 
     <TextView
+        tools:text="Retrumpeted by @jessethd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Retrumpeted by @jessethd"
         android:id="@+id/retrumpetTextView"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/trumpetTextView"

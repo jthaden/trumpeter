@@ -26,8 +26,8 @@
         android:typeface="sans"/>
 
     <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="50dp"
         android:id="@+id/backButton"
         android:src="@drawable/back_arrow"
         android:background="@color/colorBackground"
@@ -35,7 +35,8 @@
         android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:paddingRight="4dp"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -54,6 +55,7 @@
         android:layout_below="@+id/profilePictureImageView"/>
 
     <ImageView
+        tools:src="@drawable/default_profile_picture"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:scaleType="centerInside"
@@ -61,10 +63,10 @@
         android:id="@+id/profilePictureImageView"
         android:layout_alignTop="@+id/backButton"
         android:layout_toRightOf="@+id/backButton"
-        android:layout_toEndOf="@+id/backButton"
-        android:src="@drawable/default_profile_picture"/>
+        android:layout_toEndOf="@+id/backButton"/>
 
     <TextView
+        tools:text="\@jessethd"
         android:layout_width="120dp"
         android:layout_height="25dp"
         android:id="@+id/usernameTextView"
@@ -72,15 +74,14 @@
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_alignTop="@+id/profilePictureImageView"
         android:layout_above="@+id/trumpetEditText"
-        android:text="\@jessethd"
         android:paddingLeft="10dp"
         android:textSize="20sp"
         android:textColor="@color/colorText"/>
 
     <TextView
+        tools:text="160"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="160"
         android:id="@+id/charCountTextView"
         android:layout_above="@+id/trumpetEditText"
         android:layout_alignRight="@+id/trumpetEditText"
