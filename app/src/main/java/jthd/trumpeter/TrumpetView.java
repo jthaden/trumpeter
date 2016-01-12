@@ -17,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 
 /**
@@ -131,26 +132,19 @@ public class TrumpetView extends RelativeLayout {
     }
 
     /**
-     * Sets the user's profile picture at the top of the layout. If no profile picture uploaded, use default.
+     * Sets the user's profile picture. If no profile picture has been uploaded, use default.
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
         if (trumpetUser.get("profilePicture") != null){
+            // Asynchronously optimizes and loads the user's profile picture.
             ParseFile profilePicture = (ParseFile) trumpetUser.get("profilePicture");
-            profilePicture.getDataInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
-                    // TODO Optimizing and loading of non-default profile picture is currently done on UI thread; need to do as is done with resource
-                    Bitmap optimizedImage = ImageManager.decodeSampledBitmapFromByteArray(data, 60, 60);
-                    mProfilePictureImageView.setImageBitmap(optimizedImage);
-                }
-            });
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
         } else {
-            // Asynchronously optimizes and loads the default profile picture. Automatically performs commented code off of the UI thread.
-            // Provide desired pixel density for appropriate optimization.
-            ImageManager.loadBitmap(R.drawable.default_profile_picture, mProfilePictureImageView, 60, 60);
-            //Bitmap optimizedDefaultImage = ImageManager.decodeSampledBitmapFromResource(getResources(), R.drawable.default_profile_picture, 60, 60);
-            //mProfilePictureImageView.setImageBitmap(optimizedDefaultImage);
+            // Asynchronously optimizes and loads the default profile picture.
+            // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+
         }
     }
 

@@ -1,7 +1,5 @@
 package jthd.trumpeter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,16 +11,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private final int MAX_CHAR = 160;
 
-    private ParseUser mUser;
+    private ParseUser user;
 
     private Button mSubmitTrumpetButton;
     private EditText mTrumpetEditText;
@@ -47,15 +44,15 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        mUser = ParseUser.getCurrentUser();
-        mUsernameTextView.setText(mUser.getUsername());
+        user = ParseUser.getCurrentUser();
+        mUsernameTextView.setText(user.getUsername());
         setProfilePicture();
         mTrumpetEditText.addTextChangedListener(mTextEditorWatcher);
         mSubmitTrumpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // submit Trumpet and process
-                SubmitTrumpetManager.submitNewTrumpet(mTrumpetEditText.getText().toString(), mUser);
+                SubmitTrumpetManager.submitNewTrumpet(mTrumpetEditText.getText().toString(), user);
             }
         });
     }
@@ -67,22 +64,15 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (mUser.get("profilePicture") != null){
-            ParseFile profilePicture = (ParseFile) mUser.get("profilePicture");
-            profilePicture.getDataInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
-                    // TODO Optimizing and loading of non-default profile picture is currently done on UI thread; need to do as is done with resource
-                    Bitmap optimizedImage = ImageManager.decodeSampledBitmapFromByteArray(data, 60, 60);
-                    mProfilePictureImageView.setImageBitmap(optimizedImage);
-                }
-            });
+        if (user.get("profilePicture") != null){
+            // Asynchronously optimizes and loads the user's profile picture.
+            ParseFile profilePicture = (ParseFile) user.get("profilePicture");
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
         } else {
-            // Asynchronously optimizes and loads the default profile picture. Automatically performs commented code off of the UI thread.
-            // Provide desired pixel density for appropriate optimization.
-            ImageManager.loadBitmap(R.drawable.default_profile_picture, mProfilePictureImageView, 60, 60);
-            //Bitmap optimizedDefaultImage = ImageManager.decodeSampledBitmapFromResource(getResources(), R.drawable.default_profile_picture, 60, 60);
-            //mProfilePictureImageView.setImageBitmap(optimizedDefaultImage);
+            // Asynchronously optimizes and loads the default profile picture.
+            // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+
         }
     }
 
