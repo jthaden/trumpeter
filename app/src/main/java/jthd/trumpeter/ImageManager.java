@@ -3,12 +3,31 @@ package jthd.trumpeter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
 
 /**
  * Created by Jesse on 1/10/2016.
  */
 public final class ImageManager {
 
+    // TODO This should only be loaded once and be freely used when asynchronously loading images later on. Make certain this is the case.
+    private final static Bitmap optimizedPlaceHolderImage = ImageManager.decodeSampledBitmapFromResource(App.getAppContext().getResources(), R.drawable.default_profile_picture, 60, 60);
+
+    private ImageManager(){
+
+    }
+
+
+    public static void loadBitmap(int resId, ImageView imageView, int x, int y) {
+        if (BitmapWorkerTask.cancelPotentialWork(resId, imageView)) {
+            final BitmapWorkerTask task = new BitmapWorkerTask(imageView, x, y);
+            final AsyncDrawable asyncDrawable =
+                    new AsyncDrawable(App.getAppContext().getResources(), optimizedPlaceHolderImage, task);
+            imageView.setImageDrawable(asyncDrawable);
+            task.execute(resId);
+        }
+    }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
@@ -30,7 +49,7 @@ public final class ImageManager {
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        // TODO assuming that decodeByteArray fills data as decodeResource does
+        // TODO assuming that decodeByteArray fills options with data as decodeResource does
         BitmapFactory.decodeByteArray(data, 0, data.length, options);
         // Calculate inSampleSize
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
@@ -63,5 +82,8 @@ public final class ImageManager {
 
         return inSampleSize;
     }
+
+
+
 
 }

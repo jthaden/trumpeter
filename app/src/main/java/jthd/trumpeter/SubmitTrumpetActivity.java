@@ -72,12 +72,17 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
             profilePicture.getDataInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
+                    // TODO Optimizing and loading of non-default profile picture is currently done on UI thread; need to do as is done with resource
                     Bitmap optimizedImage = ImageManager.decodeSampledBitmapFromByteArray(data, 60, 60);
                     mProfilePictureImageView.setImageBitmap(optimizedImage);
                 }
             });
         } else {
-            mProfilePictureImageView.setImageResource(R.drawable.default_profile_picture);
+            // Asynchronously optimizes and loads the default profile picture. Automatically performs commented code off of the UI thread.
+            // Provide desired pixel density for appropriate optimization.
+            ImageManager.loadBitmap(R.drawable.default_profile_picture, mProfilePictureImageView, 60, 60);
+            //Bitmap optimizedDefaultImage = ImageManager.decodeSampledBitmapFromResource(getResources(), R.drawable.default_profile_picture, 60, 60);
+            //mProfilePictureImageView.setImageBitmap(optimizedDefaultImage);
         }
     }
 
