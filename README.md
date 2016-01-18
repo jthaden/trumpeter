@@ -2,6 +2,8 @@ Trumpeter
 ======
 **Trumpeter** is an Android application that functions identically to Twitter.
 
+All submitted Trumpets are currently public (viewable by all users).
+
 #### Screenshots
 ![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
 
