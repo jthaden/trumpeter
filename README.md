@@ -1,6 +1,6 @@
 Trumpeter
 ======
-**Trumpeter** is an Android social network application that functions identically to Twitter.
+**Trumpeter** is an Android application that functions identically to Twitter.
 
 #### Screenshots
 ![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
