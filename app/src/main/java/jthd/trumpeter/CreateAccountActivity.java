@@ -1,16 +1,11 @@
 package jthd.trumpeter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,27 +17,27 @@ import com.parse.SignUpCallback;
 
 public class CreateAccountActivity extends AppCompatActivity{
 
-    private EditText mEmailEditText;
-    private EditText mUsernameEditText;
-    private EditText mPasswordEditText;
-    private EditText mConfirmPasswordEditText;
-    private Button mCreateAccountButton;
+    private EditText emailEditText;
+    private EditText usernameEditText;
+    private EditText passwordEditText;
+    private EditText confirmPasswordEditText;
+    private Button createAccountButton;
 
-    private String mEmail;
-    private String mUsername;
-    private String mPassword;
-    private String mConfirmPassword;
+    private String email;
+    private String username;
+    private String password;
+    private String confirmPassword;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-        mEmailEditText = (EditText) findViewById(R.id.emailEditText);
-        mUsernameEditText = (EditText) findViewById(R.id.usernameEditText);
-        mPasswordEditText = (EditText) findViewById(R.id.passwordEditText);
-        mConfirmPasswordEditText = (EditText) findViewById(R.id.confirmPasswordEditText);
-        mCreateAccountButton = (Button) findViewById(R.id.createAccountButton);
+        emailEditText = (EditText) findViewById(R.id.emailEditText);
+        usernameEditText = (EditText) findViewById(R.id.usernameEditText);
+        passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        confirmPasswordEditText = (EditText) findViewById(R.id.confirmPasswordEditText);
+        createAccountButton = (Button) findViewById(R.id.createAccountButton);
 
     }
 
@@ -50,7 +45,7 @@ public class CreateAccountActivity extends AppCompatActivity{
     @Override
     public void onResume(){
         super.onResume();
-        mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createAccount();
@@ -64,10 +59,10 @@ public class CreateAccountActivity extends AppCompatActivity{
      * relevant to that failure.
      */
     private void createAccount(){
-        mEmail = mEmailEditText.getText().toString();
-        mUsername = mUsernameEditText.getText().toString();
-        mPassword = mPasswordEditText.getText().toString();
-        mConfirmPassword = mConfirmPasswordEditText.getText().toString();
+        email = emailEditText.getText().toString();
+        username = usernameEditText.getText().toString();
+        password = passwordEditText.getText().toString();
+        confirmPassword = confirmPasswordEditText.getText().toString();
         View focusView = checkInputs();
         if (focusView != null) {
             // There was an input error; don't attempt to create account, and focus view that is source of error
@@ -77,14 +72,14 @@ public class CreateAccountActivity extends AppCompatActivity{
             ParseUser currentUser = ParseUser.getCurrentUser();
             currentUser.logOut();
             ParseUser user = new ParseUser();
-            user.setUsername(mUsername);
-            user.setPassword(mPassword);
-            user.setEmail(mEmail);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setEmail(email);
             user.signUpInBackground(new SignUpCallback() {
                 public void done(ParseException e) {
                     if (e == null) {
                         // Log in automatically and travel to feed
-                        ParseUser.logInInBackground(mUsername, mPassword, new LogInCallback() {
+                        ParseUser.logInInBackground(username, password, new LogInCallback() {
                             public void done(ParseUser user, ParseException e) {
                                 if (user != null) {
                                     Log.d("CreateAccountActivity", "Login success");
@@ -114,30 +109,30 @@ public class CreateAccountActivity extends AppCompatActivity{
         View focusView = null;
 
         // check email for valid input
-        if (TextUtils.isEmpty(mEmail)){
-            mEmailEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mEmailEditText;
-        } else if (!mEmail.contains("@")){
-            mEmailEditText.setError(getString(R.string.errorInvalidEmailString));
-            focusView = mEmailEditText;
+        if (TextUtils.isEmpty(email)){
+            emailEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = emailEditText;
+        } else if (!email.contains("@")){
+            emailEditText.setError(getString(R.string.errorInvalidEmailString));
+            focusView = emailEditText;
         }
 
         // check password for valid input
-        if (TextUtils.isEmpty(mPassword)) {
-            mPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mPasswordEditText;
-        } else if (mPassword.length() < 6){
-            mPasswordEditText.setError(getString(R.string.errorPasswordTooShortString));
-            focusView = mPasswordEditText;
+        if (TextUtils.isEmpty(password)) {
+            passwordEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = passwordEditText;
+        } else if (password.length() < 6){
+            passwordEditText.setError(getString(R.string.errorPasswordTooShortString));
+            focusView = passwordEditText;
         }
 
         //check confirm password for valid input
-        if (TextUtils.isEmpty(mConfirmPassword)) {
-            mConfirmPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mConfirmPasswordEditText;
-        } else if (mPassword != null && !mConfirmPassword.equals(mPassword)){
-            mConfirmPasswordEditText.setError(getString(R.string.errorPasswordMismatchString));
-            focusView = mConfirmPasswordEditText;
+        if (TextUtils.isEmpty(confirmPassword)) {
+            confirmPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = confirmPasswordEditText;
+        } else if (password != null && !confirmPassword.equals(password)){
+            confirmPasswordEditText.setError(getString(R.string.errorPasswordMismatchString));
+            focusView = confirmPasswordEditText;
         }
         return focusView;
 
@@ -149,14 +144,14 @@ public class CreateAccountActivity extends AppCompatActivity{
      */
     private void createAccountFailure(ParseException e){
         if (e.getCode() == ParseException.USERNAME_TAKEN){
-            mUsernameEditText.setError("Username is taken!");
-            mUsernameEditText.requestFocus();
+            usernameEditText.setError("Username is taken!");
+            usernameEditText.requestFocus();
         } else if (e.getCode() == ParseException.EMAIL_TAKEN){
-            mEmailEditText.setError("Email is taken!");
-            mEmailEditText.requestFocus();
+            emailEditText.setError("Email is taken!");
+            emailEditText.requestFocus();
         } else {
-            mEmailEditText.setError("Unknown error occurred!");
-            mEmailEditText.requestFocus();
+            emailEditText.setError("Unknown error occurred!");
+            emailEditText.requestFocus();
             Log.d("CreateAccountActivity", Integer.toString(e.getCode()));
         }
     }

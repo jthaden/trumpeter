@@ -1,20 +1,13 @@
 package jthd.trumpeter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.parse.GetDataCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -39,15 +32,15 @@ public class TrumpetView extends RelativeLayout {
     private int retrumpets;
     private int likes;
 
-    private TextView mUsernameTextView;
-    private TextView mTrumpetTextView;
-    private TextView mRetrumpetCountTextView;
-    private TextView mLikeCountTextView;
-    private TextView mRetrumpetTextView;
-    private ImageView mProfilePictureImageView;
-    private ImageButton mReplyButton;
-    private ImageButton mRetrumpetButton;
-    private ImageButton mLikeButton;
+    private TextView usernameTextView;
+    private TextView trumpetTextView;
+    private TextView retrumpetCountTextView;
+    private TextView likeCountTextView;
+    private TextView retrumpetTextView;
+    private ImageView profilePictureImageView;
+    private ImageButton replyButton;
+    private ImageButton retrumpetButton;
+    private ImageButton likeButton;
 
 
 
@@ -75,15 +68,15 @@ public class TrumpetView extends RelativeLayout {
     @Override
     protected void onFinishInflate(){
         super.onFinishInflate();
-        mUsernameTextView = (TextView) findViewById(R.id.usernameTextView);
-        mTrumpetTextView = (TextView) findViewById(R.id.trumpetTextView);
-        mRetrumpetCountTextView = (TextView) findViewById(R.id.retrumpetCountTextView);
-        mLikeCountTextView = (TextView) findViewById(R.id.likeCountTextView);
-        mRetrumpetTextView = (TextView) findViewById(R.id.retrumpetTextView);
-        mProfilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
-        mReplyButton = (ImageButton) findViewById(R.id.replyButton);
-        mRetrumpetButton = (ImageButton) findViewById(R.id.retrumpetButton);
-        mLikeButton = (ImageButton) findViewById(R.id.likeButton);
+        usernameTextView = (TextView) findViewById(R.id.usernameTextView);
+        trumpetTextView = (TextView) findViewById(R.id.trumpetTextView);
+        retrumpetCountTextView = (TextView) findViewById(R.id.retrumpetCountTextView);
+        likeCountTextView = (TextView) findViewById(R.id.likeCountTextView);
+        retrumpetTextView = (TextView) findViewById(R.id.retrumpetTextView);
+        profilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
+        replyButton = (ImageButton) findViewById(R.id.replyButton);
+        retrumpetButton = (ImageButton) findViewById(R.id.retrumpetButton);
+        likeButton = (ImageButton) findViewById(R.id.likeButton);
     }
 
     /**
@@ -101,35 +94,35 @@ public class TrumpetView extends RelativeLayout {
         likes = trumpet.getInt("likes");
         // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
         if (retrumpet) {
-            mRetrumpetTextView.setVisibility(View.VISIBLE);
+            retrumpetTextView.setVisibility(View.VISIBLE);
             retrumpeter = (String) trumpet.get("retrumpeter");
-            mRetrumpetTextView.setText("Retrumpeted by " + retrumpeter);
+            retrumpetTextView.setText("Retrumpeted by " + retrumpeter);
         } else {
-            mRetrumpetTextView.setVisibility(View.GONE);
+            retrumpetTextView.setVisibility(View.GONE);
         }
         setProfilePicture();
-        mUsernameTextView.setText(username);
-        mTrumpetTextView.setText(text);
-        mRetrumpetCountTextView.setText(Integer.toString(retrumpets));
-        mLikeCountTextView.setText(Integer.toString(likes));
-        mReplyButton.setOnClickListener(new OnClickListener() {
+        usernameTextView.setText(username);
+        trumpetTextView.setText(text);
+        retrumpetCountTextView.setText(Integer.toString(retrumpets));
+        likeCountTextView.setText(Integer.toString(likes));
+        replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        mRetrumpetButton.setOnClickListener(new OnClickListener() {
+        retrumpetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRetrumpetCountTextView.setText(Integer.toString(retrumpets + 1));
+                retrumpetCountTextView.setText(Integer.toString(retrumpets + 1));
                 // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
                 SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
             }
         });
-        mLikeButton.setOnClickListener(new OnClickListener() {
+        likeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLikeCountTextView.setText(Integer.toString(likes + 1));
+                likeCountTextView.setText(Integer.toString(likes + 1));
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });
@@ -146,35 +139,35 @@ public class TrumpetView extends RelativeLayout {
         likes = trumpet.getInt("likes");
         // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
         if (retrumpet){
-            mRetrumpetTextView.setVisibility(View.VISIBLE);
+            retrumpetTextView.setVisibility(View.VISIBLE);
             retrumpeter = (String)trumpet.get("retrumpeter");
-            mRetrumpetTextView.setText("Retrumpeted by " + retrumpeter);
+            retrumpetTextView.setText("Retrumpeted by " + retrumpeter);
         } else {
-            mRetrumpetTextView.setVisibility(View.GONE);
+            retrumpetTextView.setVisibility(View.GONE);
         }
         setProfilePicture();
-        mUsernameTextView.setText(username);
-        mTrumpetTextView.setText(text);
-        mRetrumpetCountTextView.setText(Integer.toString(retrumpets) + " Retrumpets");
-        mLikeCountTextView.setText(Integer.toString(likes) + " Likes");
-        mReplyButton.setOnClickListener(new OnClickListener() {
+        usernameTextView.setText(username);
+        trumpetTextView.setText(text);
+        retrumpetCountTextView.setText(Integer.toString(retrumpets) + " Retrumpets");
+        likeCountTextView.setText(Integer.toString(likes) + " Likes");
+        replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        mRetrumpetButton.setOnClickListener(new OnClickListener() {
+        retrumpetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRetrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
+                retrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
                 // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
                 SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
             }
         });
-        mLikeButton.setOnClickListener(new OnClickListener() {
+        likeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLikeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
+                likeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });
@@ -189,11 +182,11 @@ public class TrumpetView extends RelativeLayout {
         if (trumpetUser.getParseFile("profilePicture") != null){
             // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
             ParseFile profilePicture = trumpetUser.getParseFile("profilePicture");
-            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(profilePictureImageView);
         } else {
             // Asynchronously optimizes and loads the default profile picture.
             // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
-            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).centerInside().into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).centerInside().into(profilePictureImageView);
 
         }
     }

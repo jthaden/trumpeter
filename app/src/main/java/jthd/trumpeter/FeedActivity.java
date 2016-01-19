@@ -1,7 +1,6 @@
 package jthd.trumpeter;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,7 +18,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FeedActivity extends AppCompatActivity implements SubmitBarFragment.OnFragmentInteractionListener{
@@ -28,8 +26,8 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     private ParseUser mUser;
 
-    private Toolbar mTitleBar;
-    private ListView mFeedListView;
+    private Toolbar titleBar;
+    private ListView feedListView;
     private SwipeRefreshLayout feedSwipeLayout;
 
     boolean isScrollingUp;
@@ -40,8 +38,8 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        mTitleBar = (Toolbar) findViewById(R.id.titleBar);
-        mFeedListView = (ListView) findViewById(R.id.feedListView);
+        titleBar = (Toolbar) findViewById(R.id.titleBar);
+        feedListView = (ListView) findViewById(R.id.feedListView);
         feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
         /**
          * Waiting on FeedManager concept. Need to verify how to save List<ParseObject> data from a Callback inner class and return it in a function,
@@ -50,7 +48,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         // FeedManager feedManager = new FeedManager();
         // List<ParseObject> trumpetList = feedManager.getTrumpets();
         loadListViewData();
-        setSupportActionBar(mTitleBar);
+        setSupportActionBar(titleBar);
         feedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                             @Override
                                             public void onRefresh() {
@@ -116,7 +114,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
                     // Trumpets retrieved, create FeedAdapter with this data and load the Adapter into the ListView
                     Log.d("FeedActivity", Integer.toString(trumpetList.size()));
                     Log.d("FeedActivity", "Found trumpets to refresh");
-                    FeedAdapter adapter = (FeedAdapter)mFeedListView.getAdapter();
+                    FeedAdapter adapter = (FeedAdapter) feedListView.getAdapter();
                     adapter.getNewData(trumpetList);
                     Log.d("FeedActivity", "Trumpets refreshed");
                     adapter.notifyDataSetChanged();
@@ -144,7 +142,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
                     // Trumpets retrieved, create FeedAdapter with this data and load the Adapter into the ListView
                     Log.d("FeedManager", "Found trumpets");
                     FeedAdapter adapter = new FeedAdapter(FeedActivity.this, R.layout.trumpet_view_layout, trumpetList);
-                    mFeedListView.setAdapter(adapter);
+                    feedListView.setAdapter(adapter);
                     Log.d("FeedManager", "trumpetList count " + trumpetList.size());
                 } else {
                     // Error occurred retrieving Trumpets; display message to user
@@ -155,7 +153,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
     }
 
     private void startScrollListener(final Fragment submitBarFragment){
-        mFeedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+        feedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 // TODO Auto-generated method stub
             }
@@ -167,8 +165,8 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
                     Log.i("a", "scrolling stopped...");
 
 
-                if (view.getId() == mFeedListView.getId()) {
-                    final int currentFirstVisibleItem = mFeedListView.getFirstVisiblePosition();
+                if (view.getId() == feedListView.getId()) {
+                    final int currentFirstVisibleItem = feedListView.getFirstVisiblePosition();
                     if (currentFirstVisibleItem > lastFirstVisibleItem) {
                         isScrollingUp = false;
                         Log.i("a", "scrolling down...");

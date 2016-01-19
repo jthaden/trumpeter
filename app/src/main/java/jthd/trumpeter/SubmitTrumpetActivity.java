@@ -21,38 +21,38 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private ParseUser user;
 
-    private Button mSubmitTrumpetButton;
-    private EditText mTrumpetEditText;
-    private ImageButton mBackButton;
-    private ImageView mProfilePictureImageView;
-    private TextView mUsernameTextView;
-    private TextView mCharCountTextView;
+    private Button submitTrumpetButton;
+    private EditText trumpetEditText;
+    private ImageButton backButton;
+    private ImageView profilePictureImageView;
+    private TextView usernameTextView;
+    private TextView charCountTextView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit_trumpet);
-        mProfilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
-        mSubmitTrumpetButton = (Button) findViewById(R.id.submitTrumpetButton);
-        mBackButton = (ImageButton) findViewById(R.id.backButton);
-        mUsernameTextView = (TextView) findViewById(R.id.usernameTextView);
-        mCharCountTextView = (TextView) findViewById(R.id.charCountTextView);
-        mTrumpetEditText = (EditText) findViewById(R.id.trumpetEditText);
+        profilePictureImageView = (ImageView) findViewById(R.id.profilePictureImageView);
+        submitTrumpetButton = (Button) findViewById(R.id.submitTrumpetButton);
+        backButton = (ImageButton) findViewById(R.id.backButton);
+        usernameTextView = (TextView) findViewById(R.id.usernameTextView);
+        charCountTextView = (TextView) findViewById(R.id.charCountTextView);
+        trumpetEditText = (EditText) findViewById(R.id.trumpetEditText);
     }
 
     @Override
     protected void onResume(){
         super.onResume();
         user = ParseUser.getCurrentUser();
-        mUsernameTextView.setText(user.getUsername());
+        usernameTextView.setText(user.getUsername());
         setProfilePicture();
-        mTrumpetEditText.addTextChangedListener(mTextEditorWatcher);
-        mSubmitTrumpetButton.setOnClickListener(new View.OnClickListener() {
+        trumpetEditText.addTextChangedListener(mTextEditorWatcher);
+        submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // submit Trumpet and process
-                SubmitTrumpetManager.submitNewTrumpet(mTrumpetEditText.getText().toString(), user);
+                SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
             }
         });
     }
@@ -67,11 +67,11 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         if (user.getParseFile("profilePicture") != null){
             // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
             ParseFile profilePicture = user.getParseFile("profilePicture");
-            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(profilePictureImageView);
         } else {
             // Asynchronously optimizes and loads the default profile picture.
             // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
-            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).into(profilePictureImageView);
 
         }
     }
@@ -85,7 +85,7 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             // sets TextView to 160 - current length of EditText
-            mCharCountTextView.setText(String.valueOf(MAX_CHAR - s.length()));
+            charCountTextView.setText(String.valueOf(MAX_CHAR - s.length()));
         }
 
         public void afterTextChanged(Editable s) {

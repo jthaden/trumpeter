@@ -21,7 +21,7 @@ import android.widget.Button;
  */
 public class SubmitBarFragment extends Fragment {
 
-    private Button mSubmitTrumpetButton;
+    private Button submitTrumpetButton;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,14 +71,14 @@ public class SubmitBarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_submit_bar, container, false);
-        mSubmitTrumpetButton = (Button) view.findViewById(R.id.submitTrumpetButton);
-        //mSubmitTrumpetButton.setPaintFlags(mSubmitTrumpetButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        submitTrumpetButton = (Button) view.findViewById(R.id.submitTrumpetButton);
+        //submitTrumpetButton.setPaintFlags(submitTrumpetButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         return view;
     }
 
     public void onResume(){
         super.onResume();
-        mSubmitTrumpetButton.setOnClickListener(new View.OnClickListener() {
+        submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toSubmitTrumpet();

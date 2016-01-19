@@ -18,14 +18,14 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText mEmailEditText;
-    private EditText mPasswordEditText;
-    private Button mLoginButton;
-    private Button mCreateAccountButton;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private Button createAccountButton;
     //private Button mLoginWithFacebookButton;
 
-    private String mEmail;
-    private String mPassword;
+    private String email;
+    private String password;
 
 
     @Override
@@ -39,10 +39,10 @@ public class LoginActivity extends AppCompatActivity {
             Log.d("LoginActivity", "boop");
         }
         setContentView(R.layout.activity_login);
-        mEmailEditText = (EditText)findViewById(R.id.emailEditText);
-        mPasswordEditText = (EditText)findViewById(R.id.passwordEditText);
-        mLoginButton = (Button)findViewById(R.id.loginButton);
-        mCreateAccountButton = (Button)findViewById(R.id.createAccountButton);
+        emailEditText = (EditText)findViewById(R.id.emailEditText);
+        passwordEditText = (EditText)findViewById(R.id.passwordEditText);
+        loginButton = (Button)findViewById(R.id.loginButton);
+        createAccountButton = (Button)findViewById(R.id.createAccountButton);
         // TODO login with facebook button here
 
     }
@@ -51,13 +51,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        mLoginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logIn();
             }
         });
-        mCreateAccountButton.setOnClickListener(new View.OnClickListener() {
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 toCreateAccount();
@@ -75,23 +75,23 @@ public class LoginActivity extends AppCompatActivity {
         // Log out potential current user to prevent invalid session token issues (error 209)
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.logOut();
-        mEmail = mEmailEditText.getText().toString();
-        mPassword = mPasswordEditText.getText().toString();
+        email = emailEditText.getText().toString();
+        password = passwordEditText.getText().toString();
         View focusView = checkInputs();
         if (focusView != null) {
             // There was an input error; don't attempt to log in, and focus view that is source of error
             focusView.requestFocus();
         } else {
             // Retrieve username of account with provided email for login
-            if (mEmail.contains("@")) {
+            if (email.contains("@")) {
                 ParseQuery<ParseUser> query = ParseUser.getQuery();
-                query.whereEqualTo("email", mEmail);
+                query.whereEqualTo("email", email);
                 query.getFirstInBackground(new GetCallback<ParseUser>() {
                     @Override
                     public void done(ParseUser object, ParseException e) {
                         if (object != null) {
                             String username = object.getUsername();
-                            ParseUser.logInInBackground(username, mPassword, new LogInCallback() {
+                            ParseUser.logInInBackground(username, password, new LogInCallback() {
                                 public void done(ParseUser user, ParseException e) {
                                     if (user != null) {
                                         Log.d("LoginActivity", "Login success");
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
             } else {
                 // Username has been provided, login with username
-                ParseUser.logInInBackground(mEmail, mPassword, new LogInCallback() {
+                ParseUser.logInInBackground(email, password, new LogInCallback() {
                     public void done(ParseUser user, ParseException e) {
                         if (user != null) {
                             Log.d("LoginActivity", "Login success");
@@ -137,15 +137,15 @@ public class LoginActivity extends AppCompatActivity {
         View focusView = null;
 
         // check email/username for valid input
-        if (TextUtils.isEmpty(mEmail)){
-            mEmailEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mEmailEditText;
+        if (TextUtils.isEmpty(email)){
+            emailEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = emailEditText;
         }
 
         // check password for valid input
-        if (TextUtils.isEmpty(mPassword)) {
-            mPasswordEditText.setError(getString(R.string.errorFieldRequiredString));
-            focusView = mPasswordEditText;
+        if (TextUtils.isEmpty(password)) {
+            passwordEditText.setError(getString(R.string.errorFieldRequiredString));
+            focusView = passwordEditText;
         }
         return focusView;
 
@@ -156,10 +156,10 @@ public class LoginActivity extends AppCompatActivity {
      * @param e For debugging, the ParseException associated with the login failure.
      */
     private void loginFailure(ParseException e){
-        mEmailEditText.setError("Login failed.");
-        mEmailEditText.requestFocus();
-        mEmailEditText.setText("");
-        mPasswordEditText.setText("");
+        emailEditText.setError("Login failed.");
+        emailEditText.requestFocus();
+        emailEditText.setText("");
+        passwordEditText.setText("");
         //Log.d("LoginActivity", Integer.toString(e.getCode()));
     }
 
