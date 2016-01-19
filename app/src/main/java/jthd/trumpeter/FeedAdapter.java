@@ -75,5 +75,9 @@ public class FeedAdapter extends ArrayAdapter<ParseObject> {
         return view;
     }
 
+    public void getNewData(List<ParseObject> tList){
+        trumpetList = new ArrayList<ParseObject>(tList);
+    }
+
 
 }

@@ -1,0 +1,177 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                tools:context="jthd.trumpeter.ViewTrumpetActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimaryGray"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <jthd.trumpeter.TrumpetView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detailedItemLayout"
+        android:orientation="vertical"
+        android:layout_below="@+id/titleBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+
+
+    <TextView
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, um."
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/trumpetTextView"
+        android:paddingLeft="8dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/colorTrumpetText"
+        android:textSize="15sp"
+        android:layout_below="@+id/profilePictureImageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        tools:text="55 Likes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/likeCountTextView"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="1dp"
+        android:textSize="14sp"
+        android:layout_below="@+id/trumpetTextView"
+        android:layout_toRightOf="@+id/likeButton"
+        android:layout_toEndOf="@+id/likeButton"/>
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:id="@+id/likeButton"
+        android:src="@drawable/like"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:paddingTop="2dp"
+        android:layout_alignBottom="@+id/likeCountTextView"
+        android:layout_alignRight="@+id/retrumpetTextView"
+        android:layout_alignEnd="@+id/retrumpetTextView"/>
+
+    <TextView
+        tools:text="30 Retrumpets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/retrumpetCountTextView"
+        android:textColor="#FFFFFF"
+        android:paddingBottom="6dp"
+        android:paddingLeft="2dp"
+        android:textSize="14sp"
+        android:layout_alignTop="@+id/likeCountTextView"
+        android:layout_toRightOf="@+id/retrumpetButton"
+        android:layout_toEndOf="@+id/retrumpetButton"/>
+
+    <ImageButton
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:id="@+id/retrumpetButton"
+        android:src="@drawable/retrumpet"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:layout_alignBottom="@+id/replyButton"
+        android:layout_toRightOf="@+id/profilePictureImageView"
+        android:layout_toEndOf="@+id/profilePictureImageView"/>
+
+    <ImageButton
+        android:layout_width="35dp"
+        android:layout_height="28dp"
+        android:id="@+id/replyButton"
+        android:src="@drawable/reply_arrow"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:background="#00FFFFFF"
+        android:paddingLeft="0dp"
+        android:paddingBottom="2dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_alignBottom="@+id/retrumpetCountTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        tools:text="\@jessethd"
+        android:layout_width="120dp"
+        android:layout_height="25dp"
+        android:id="@+id/usernameTextView"
+        android:gravity="center|left"
+        android:paddingLeft="4dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorText"
+        android:textStyle="bold"
+        android:layout_alignBottom="@+id/profilePictureImageView"
+        android:layout_alignLeft="@+id/retrumpetTextView"
+        android:layout_alignStart="@+id/retrumpetTextView"
+        android:layout_marginBottom="21dp"/>
+
+    <TextView
+        tools:text="Retrumpeted by @jessethd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/retrumpetTextView"
+        android:paddingLeft="8dp"
+        android:paddingTop="6dp"
+        android:layout_alignTop="@+id/detailedItemLayout"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        tools:src="@drawable/default_profile_picture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:id="@+id/profilePictureImageView"
+        android:layout_below="@+id/retrumpetTextView"
+        android:layout_alignLeft="@+id/replyButton"
+        android:layout_alignStart="@+id/replyButton"/>
+
+    </jthd.trumpeter.TrumpetView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/detailedItemLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/detailedTrumpetSeparationLine"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/titleBar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/actionBarSeparationLine"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/replyFeedListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/detailedItemLayout"/>
+
+</RelativeLayout>

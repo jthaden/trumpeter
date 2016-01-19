@@ -18,11 +18,13 @@ public final class UpdateTrumpetManager {
     }
 
     public static void updateRetrumpetCount(int trumpetID){
+        Log.d("UpdateTrumpetManager", "Updating ID: " + Integer.toString(trumpetID));
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.whereEqualTo("trumpetID", trumpetID);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {
+                    Log.d("UpdateTrumpetManager", "Trumpets found to update: " + Integer.toString(trumpetList.size()));
                     for (ParseObject trumpet : trumpetList){
                         trumpet.increment("retrumpets");
                     }

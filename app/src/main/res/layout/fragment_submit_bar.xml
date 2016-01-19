@@ -1,9 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
+             android:layout_height="wrap_content"
              tools:context="jthd.trumpeter.SubmitBarFragment"
-                android:id="@+id/TrumpetLayout">
+                android:id="@+id/SubmitBarLayout">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -46,7 +46,7 @@
         android:layout_above="@+id/anchor"
         android:id="@+id/backgroundTextView2"
         android:background="@drawable/trumpet_lines"
-        android:layout_marginBottom="-276dp"
+        android:layout_marginBottom="-558dp"
         android:layout_marginLeft="10dp"
         android:paddingRight="250dp"/>
 

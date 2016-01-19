@@ -11,4 +11,7 @@
             android:orderInCategory="10"
             android:icon="@drawable/notifications_trumpet"
             app:showAsAction="ifRoom"/>
+      <item android:id="@+id/refreshAction"
+          app:showAsAction="never"
+          android:title="Refresh"/>
 </menu>

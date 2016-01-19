@@ -1,10 +1,9 @@
-<android.support.v4.widget.SwipeRefreshLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                tools:context="jthd.trumpeter.FeedActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.tobrun.example.swipetorefresh.MainActivity"
                 android:id="@+id/feedLayout">
 
     <android.support.v7.widget.Toolbar
@@ -19,12 +18,35 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/feedListView"
-        android:layout_below="@+id/titleBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignTop="@+id/feedSwipeLayout"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/actionBarSeparationLine"/>
+
+
+    <android.support.v4.widget.SwipeRefreshLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="fill_parent"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    tools:context="jthd.trumpeter.FeedActivity"
+                    android:id="@+id/feedSwipeLayout"
+                    android:layout_below="@+id/titleBar">
+
+
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/feedListView"
+            android:layout_below="@+id/titleBar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

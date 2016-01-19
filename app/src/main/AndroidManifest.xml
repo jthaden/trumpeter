@@ -30,12 +30,17 @@
         <activity
             android:name=".FeedActivity"
             android:label="@string/title_activity_feed"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
         <activity
             android:name=".SubmitTrumpetActivity"
             android:label="@string/title_activity_submit_trumpet"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".ViewTrumpetActivity"
+            android:label="@string/title_activity_view_trumpet"
+            android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
 

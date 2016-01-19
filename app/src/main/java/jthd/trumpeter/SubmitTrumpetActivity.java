@@ -64,14 +64,14 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (user.get("profilePicture") != null){
-            // Asynchronously optimizes and loads the user's profile picture.
-            ParseFile profilePicture = (ParseFile) user.get("profilePicture");
-            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+        if (user.getParseFile("profilePicture") != null){
+            // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
+            ParseFile profilePicture = user.getParseFile("profilePicture");
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
         } else {
             // Asynchronously optimizes and loads the default profile picture.
             // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
-            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
 
         }
     }

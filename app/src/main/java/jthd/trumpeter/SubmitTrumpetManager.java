@@ -56,7 +56,7 @@ public final class SubmitTrumpetManager {
         retrumpet.put("user", trumpet.get("user"));
         retrumpet.put("retrumpet", true);
         retrumpet.put("retrumpeter", retrumpeter);
-        retrumpet.put("retrumpets", trumpet.get("retrumpets"));
+        retrumpet.put("retrumpets", trumpet.getInt("retrumpets") + 1);
         retrumpet.put("likes", trumpet.get("likes"));
         retrumpet.put("trumpetID", trumpet.get("trumpetID"));
         retrumpet.saveInBackground();

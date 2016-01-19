@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +27,8 @@ import com.squareup.picasso.Picasso;
  */
 
 public class TrumpetView extends RelativeLayout {
+
+    private Context context;
 
     private ParseObject trumpet;
     private ParseUser trumpetUser;
@@ -51,16 +54,19 @@ public class TrumpetView extends RelativeLayout {
     /** Inherited constructor. */
     public TrumpetView(Context context) {
         super(context);
+        this.context = context;
     }
 
     /** Inherited constructor. */
     public TrumpetView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
     }
 
     /** Inherited constructor. */
     public TrumpetView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
     }
 
     /**
@@ -85,17 +91,18 @@ public class TrumpetView extends RelativeLayout {
      * Sets listeners for buttons - TODO Hope this works; it SHOULD. If it doesn't, WILL work with listener in getView(); would need to use viewHolder model instead
      * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
      */
-    public void showTrumpet(ParseObject showTrumpet){
+    public void showTrumpet(ParseObject showTrumpet) {
         trumpet = showTrumpet;
-        trumpetUser = (ParseUser)trumpet.get("user");
+        trumpetUser = (ParseUser) trumpet.get("user");
         username = trumpetUser.getUsername();
-        text = (String)trumpet.get("text");
-        retrumpet = (boolean)trumpet.get("retrumpet");
+        text = (String) trumpet.get("text");
+        retrumpet = (boolean) trumpet.get("retrumpet");
         retrumpets = trumpet.getInt("retrumpets");
         likes = trumpet.getInt("likes");
         // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
-        if (retrumpet){
-            retrumpeter = (String)trumpet.get("retrumpeter");
+        if (retrumpet) {
+            mRetrumpetTextView.setVisibility(View.VISIBLE);
+            retrumpeter = (String) trumpet.get("retrumpeter");
             mRetrumpetTextView.setText("Retrumpeted by " + retrumpeter);
         } else {
             mRetrumpetTextView.setVisibility(View.GONE);
@@ -126,8 +133,51 @@ public class TrumpetView extends RelativeLayout {
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });
+    }
 
 
+    public void showDetailedTrumpet(ParseObject showTrumpet){
+        trumpet = showTrumpet;
+        trumpetUser = (ParseUser)trumpet.get("user");
+        username = trumpetUser.getUsername();
+        text = (String)trumpet.get("text");
+        retrumpet = (boolean)trumpet.get("retrumpet");
+        retrumpets = trumpet.getInt("retrumpets");
+        likes = trumpet.getInt("likes");
+        // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
+        if (retrumpet){
+            mRetrumpetTextView.setVisibility(View.VISIBLE);
+            retrumpeter = (String)trumpet.get("retrumpeter");
+            mRetrumpetTextView.setText("Retrumpeted by " + retrumpeter);
+        } else {
+            mRetrumpetTextView.setVisibility(View.GONE);
+        }
+        setProfilePicture();
+        mUsernameTextView.setText(username);
+        mTrumpetTextView.setText(text);
+        mRetrumpetCountTextView.setText(Integer.toString(retrumpets) + " Retrumpets");
+        mLikeCountTextView.setText(Integer.toString(likes) + " Likes");
+        mReplyButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mRetrumpetButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRetrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
+                // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
+                SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
+            }
+        });
+        mLikeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLikeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
+                UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
+            }
+        });
 
     }
 
@@ -136,14 +186,14 @@ public class TrumpetView extends RelativeLayout {
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (trumpetUser.get("profilePicture") != null){
-            // Asynchronously optimizes and loads the user's profile picture.
-            ParseFile profilePicture = (ParseFile) trumpetUser.get("profilePicture");
-            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+        if (trumpetUser.getParseFile("profilePicture") != null){
+            // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
+            ParseFile profilePicture = trumpetUser.getParseFile("profilePicture");
+            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(180, 180).into(mProfilePictureImageView);
         } else {
             // Asynchronously optimizes and loads the default profile picture.
             // TODO Acceptable way to get context here? Is there an easier way (it is passed in). Does it matter?
-            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(60, 60).into(mProfilePictureImageView);
+            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).centerInside().into(mProfilePictureImageView);
 
         }
     }
