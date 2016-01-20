@@ -84,7 +84,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
             public void done(ParseObject trumpet, ParseException e) {
                 if (e == null) {
                     detailedTrumpetView.showDetailedTrumpet(trumpet);
-                    loadListViewData(trumpet);
+                    loadReplyListViewData(trumpet.getInt("trumpetID"));
                 } else {
 
                 }
@@ -92,10 +92,15 @@ public class ViewTrumpetActivity extends AppCompatActivity {
         });
     }
 
-    private void loadListViewData(ParseObject trumpet){
+    /**
+     * Loads the list of Trumpets that are marked as reply Trumpets to the Trumpet being viewed. This relationship is maintained through the attribute replyTrumpetID,
+     * which points to the trumpetID of the Trumpet being viewed.
+     * @param trumpetID The TrumpetID of the Trumpet that is being viewed, for use in matching with replyTrumpetIDs.
+     */
+    private void loadReplyListViewData(int trumpetID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.orderByAscending("createdAt");
-        query.whereEqualTo("replyTrumpetID", trumpet.getInt("trumpetID"));
+        query.whereEqualTo("replyTrumpetID", trumpetID);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {

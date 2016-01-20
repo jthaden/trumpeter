@@ -1,5 +1,6 @@
 package jthd.trumpeter;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -28,6 +29,9 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
     private TextView usernameTextView;
     private TextView charCountTextView;
 
+    private String replyUsername;
+    private int replyTrumpetID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +43,6 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         usernameTextView = (TextView) findViewById(R.id.usernameTextView);
         charCountTextView = (TextView) findViewById(R.id.charCountTextView);
         trumpetEditText = (EditText) findViewById(R.id.trumpetEditText);
-    }
-
-    @Override
-    protected void onResume(){
-        super.onResume();
         user = ParseUser.getCurrentUser();
         usernameTextView.setText(user.getUsername());
         setProfilePicture();
@@ -51,16 +50,40 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // submit Trumpet and process
-                SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
+                // If replyUsername is empty (not a reply request), submit new unlinked Trumpet. Otherwise, submit Trumpet as a reply with linked trumpetID
+                if (replyUsername == null) {
+                    SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
+                } else {
+                    SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+    }
+
+    /**
+     * Checks Intent data to see if this activity was launched from a regular new Trumpet request (a click on the SubmitBar fragment in FeedActivity) or
+     * from a reply request (through a reply button). If reply, loads relevant reply data and automatically displays "@($username_being_replied_to)" in
+     * the EditText.
+     */
+    private void checkIfReply(){
+        Intent intent = getIntent();
+        replyUsername = intent.getStringExtra("trumpetUsername");
+        if (replyUsername != null){
+            replyTrumpetID = intent.getIntExtra("trumpetID", -1);
+            trumpetEditText.setText("@" + replyUsername);
+        }
     }
 
 
 
     /**
-     * Sets the user's profile picture at the top of the layout. If no profile picture uploaded, use default.
+     * Sets the user's profile picture asynchronously with Picasso at the top of the layout. If no profile picture uploaded, use default.
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default

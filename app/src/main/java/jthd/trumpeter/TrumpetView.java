@@ -1,6 +1,7 @@
 package jthd.trumpeter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,8 +21,6 @@ import com.squareup.picasso.Picasso;
  */
 
 public class TrumpetView extends RelativeLayout {
-
-    private Context context;
 
     private ParseObject trumpet;
     private ParseUser trumpetUser;
@@ -47,19 +46,16 @@ public class TrumpetView extends RelativeLayout {
     /** Inherited constructor. */
     public TrumpetView(Context context) {
         super(context);
-        this.context = context;
     }
 
     /** Inherited constructor. */
     public TrumpetView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
     }
 
     /** Inherited constructor. */
     public TrumpetView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        this.context = context;
     }
 
     /**
@@ -108,7 +104,7 @@ public class TrumpetView extends RelativeLayout {
         replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                toSubmitTrumpetActivityReply();
             }
         });
         retrumpetButton.setOnClickListener(new OnClickListener() {
@@ -153,7 +149,7 @@ public class TrumpetView extends RelativeLayout {
         replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                toSubmitTrumpetActivityReply();
             }
         });
         retrumpetButton.setOnClickListener(new OnClickListener() {
@@ -175,7 +171,7 @@ public class TrumpetView extends RelativeLayout {
     }
 
     /**
-     * Sets the user's profile picture. If no profile picture has been uploaded, use default.
+     * Sets the user's profile picture asynchronously with Picasso. If no profile picture has been uploaded, use default.
      */
     private void setProfilePicture(){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
@@ -189,6 +185,16 @@ public class TrumpetView extends RelativeLayout {
             Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(180, 180).centerInside().into(profilePictureImageView);
 
         }
+    }
+
+    /**
+     * Launches SubmitTrumpetActivity with intent data from this Trumpet which is being replied to.
+     */
+    private void toSubmitTrumpetActivityReply(){
+        Intent intent = new Intent(getContext(), SubmitTrumpetActivity.class);
+        intent.putExtra("trumpetUsername", username);
+        intent.putExtra("trumpetID", trumpet.getString("trumpetID"));
+        getContext().startActivity(intent);
     }
 
 

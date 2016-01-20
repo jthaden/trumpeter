@@ -23,13 +23,15 @@ public final class SubmitTrumpetManager {
     /**
      * Creates a new ParseObject of class "Trumpet" with the user-provided information and submitting ParseUser. Submission date automatically saved in
      * "createdAt" field.
+     * @param text The user-submitted text to be associated with this Trumpet.
+     * @param user The ParseUser that submitted the Trumpet.
      */
     public static void submitNewTrumpet(String text, ParseUser user) {
         trumpet = new ParseObject("Trumpet");
         trumpet.put("text", text);
         trumpet.put("user", user);
         trumpet.put("retrumpet", false);
-        //trumpet.put("retrumpeter", ""); Should default to empty "", right?
+        //trumpet.put("retrumpeter", ""); Defaults to empty
         trumpet.put("retrumpets", 0);
         trumpet.put("likes", 0);
         // This query retrieves the next available Trumpet ID for the new Trumpet from the TrumpetCounter object and atomically increments the counter field.
@@ -60,6 +62,39 @@ public final class SubmitTrumpetManager {
         retrumpet.put("likes", trumpet.get("likes"));
         retrumpet.put("trumpetID", trumpet.get("trumpetID"));
         retrumpet.saveInBackground();
+    }
+
+    /**
+     * Creates a "reply" Trumpet that is linked to another Trumpet (the one replied to) by the field "replyTrumpetID". Trumpet is otherwise identical to any
+     * other new Trumpet.
+     * @param text The user-submitted text to be associated with this Trumpet.
+     * @param user The ParseUser that submitted the Trumpet.
+     * @param replyTrumpetID The trumpetID of the Trumpet that is being replied to.
+     */
+
+    public static void submitReplyTrumpet(String text, ParseUser user, int replyTrumpetID) {
+        trumpet = new ParseObject("Trumpet");
+        trumpet.put("text", text);
+        trumpet.put("user", user);
+        trumpet.put("retrumpet", false);
+        //trumpet.put("retrumpeter", ""); Defaults to empty
+        trumpet.put("retrumpets", 0);
+        trumpet.put("likes", 0);
+        trumpet.put("replyTrumpetID", replyTrumpetID);
+        // This query retrieves the next available Trumpet ID for the new Trumpet from the TrumpetCounter object and atomically increments the counter field.
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("TrumpetCounter");
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            public void done(ParseObject trumpetCounter, ParseException e) {
+                if (e == null) {
+                    trumpet.put("trumpetID", trumpetCounter.getInt("nextTrumpetID"));
+                    trumpet.saveInBackground();
+                    trumpetCounter.increment("nextTrumpetID");
+                    trumpetCounter.saveInBackground();
+                } else {
+
+                }
+            }
+        });
     }
 }
 
