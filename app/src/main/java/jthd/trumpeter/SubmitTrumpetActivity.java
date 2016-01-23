@@ -46,6 +46,7 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         user = ParseUser.getCurrentUser();
         usernameTextView.setText(user.getUsername());
         setProfilePicture();
+        checkIfReply();
         trumpetEditText.addTextChangedListener(mTextEditorWatcher);
         submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,8 +54,12 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
                 // If replyUsername is empty (not a reply request), submit new unlinked Trumpet. Otherwise, submit Trumpet as a reply with linked trumpetID
                 if (replyUsername == null) {
                     SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
+                    // This finish call should return user to FeedActivity
+                    finish();
                 } else {
                     SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
+                    // This finish call should return user to FeedActivity or ViewTrumpetActivity, depending on which reply button was pushed
+                    finish();
                 }
             }
         });
@@ -69,7 +74,7 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
     /**
      * Checks Intent data to see if this activity was launched from a regular new Trumpet request (a click on the SubmitBar fragment in FeedActivity) or
      * from a reply request (through a reply button). If reply, loads relevant reply data and automatically displays "@($username_being_replied_to)" in
-     * the EditText.
+     * the EditText. Sets user's cursor to 1 whitespace past reply username.
      */
     private void checkIfReply(){
         Intent intent = getIntent();
@@ -77,6 +82,7 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         if (replyUsername != null){
             replyTrumpetID = intent.getIntExtra("trumpetID", -1);
             trumpetEditText.setText("@" + replyUsername);
+            trumpetEditText.setSelection(trumpetEditText.getText().length() + 1);
         }
     }
 

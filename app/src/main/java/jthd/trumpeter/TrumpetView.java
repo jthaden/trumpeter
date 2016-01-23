@@ -77,7 +77,7 @@ public class TrumpetView extends RelativeLayout {
 
     /**
      * Retrieves data from provided Trumpet ParseObject and loads it into trumpetView's Views. Displays or hides retrumpetTextView based on retrumpet status.
-     * Sets listeners for buttons - TODO Hope this works; it SHOULD. If it doesn't, WILL work with listener in getView(); would need to use viewHolder model instead
+     * Sets listeners for buttons.
      * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
      */
     public void showTrumpet(ParseObject showTrumpet) {
@@ -124,7 +124,11 @@ public class TrumpetView extends RelativeLayout {
         });
     }
 
-
+    /**
+     * Retrieves data from showTrumpet and loads it into a more detailed version of the TrumpetView layout designed for the specific
+     * Trumpet being viewed in ViewTrumpetActivity. Exact differences are visible in ViewTrumpetActivity layout file.
+     * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
+     */
     public void showDetailedTrumpet(ParseObject showTrumpet){
         trumpet = showTrumpet;
         trumpetUser = (ParseUser)trumpet.get("user");
@@ -193,7 +197,7 @@ public class TrumpetView extends RelativeLayout {
     private void toSubmitTrumpetActivityReply(){
         Intent intent = new Intent(getContext(), SubmitTrumpetActivity.class);
         intent.putExtra("trumpetUsername", username);
-        intent.putExtra("trumpetID", trumpet.getString("trumpetID"));
+        intent.putExtra("trumpetID", trumpet.getInt("trumpetID"));
         getContext().startActivity(intent);
     }
 

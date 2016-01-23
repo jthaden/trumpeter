@@ -5,13 +5,15 @@
     <item android:id="@+id/settingsAction"
           android:title="@string/action_settings"
           android:orderInCategory="100"
-          app:showAsAction="never"/>
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/settings_actionbar_button"/>
       <item android:id="@+id/notificationsAction"
             android:title="@string/notifications"
             android:orderInCategory="10"
             android:icon="@drawable/notifications_trumpet"
             app:showAsAction="ifRoom"/>
       <item android:id="@+id/refreshAction"
-          app:showAsAction="never"
-          android:title="Refresh"/>
+          app:showAsAction="ifRoom"
+          android:title="Refresh"
+          android:icon="@drawable/refresh_actionbar_button"/>
 </menu>

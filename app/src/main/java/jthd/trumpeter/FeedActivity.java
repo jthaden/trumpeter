@@ -1,6 +1,7 @@
 package jthd.trumpeter;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -32,12 +33,14 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     boolean isScrollingUp;
     int lastFirstVisibleItem;
+    boolean firstLoad;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+        firstLoad = true;
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         feedListView = (ListView) findViewById(R.id.feedListView);
         feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
@@ -70,7 +73,16 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         mUser = ParseUser.getCurrentUser();
         Log.d("FeedActivity", mUser.getEmail());
         Fragment submitBarFragment = launchSubmitBarFragment();
-        //startScrollListener(submitBarFragment);
+        startScrollListener(submitBarFragment);
+        // On first load, after call to loadListViewData(), firstLoad bool prevents refreshListView() from being called. On future onResume() calls
+        // (e.g. after activity completion and return), firstLoad is false and the ListView is refreshed.
+        // TODO This seemed to be causing some errors, but tricky to reproduce. Keep an eye out.
+        if (!firstLoad && feedListView.getAdapter() != null){
+            //feedSwipeLayout.setRefreshing(true); Not sure I like displaying the refresh here. Keep it out unless it feels missing. Just seems more fluid w/o.
+            refreshListView();
+        }
+        firstLoad = false;
+
         // TODO; need a good way to refresh. Call refresh function (that refresh button also uses) on resume, that somehow loads adapter with new info?
         // Make new adapter and load it? All that needs to be done is making a need FeedManager in FeedAdapter; function that just does that?
         // Clarify: Need to refresh when "reloading" it EXCEPT when backing onto it (in which case I should be at the same scroll position and data)
@@ -102,16 +114,20 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
     }
 
 
-
-
+    /**
+     *
+     * Note: Call feedSwipeLayout.setRefreshing(true) before every call to this function. This function sets refreshing to false once refreshing
+     * is complete.
+     */
     private void refreshListView(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.orderByDescending("createdAt");
         query.setLimit(MAX_TRUMPETS);
+        query.whereDoesNotExist("replyTrumpetID");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {
-                    // Trumpets retrieved, create FeedAdapter with this data and load the Adapter into the ListView
+                    // Trumpets retrieved, get adapter and update its internal trumpetList
                     Log.d("FeedActivity", Integer.toString(trumpetList.size()));
                     Log.d("FeedActivity", "Found trumpets to refresh");
                     FeedAdapter adapter = (FeedAdapter) feedListView.getAdapter();
@@ -129,13 +145,14 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
 
     /**
-     * Queries Parse for desired Trumpet data and loads that Trumpet data into the Feed ListView as a custom ArrayAdapter, FeedAdapter.
+     * Queries Parse for desired non-reply Trumpet data and loads that Trumpet data into the Feed ListView as a custom ArrayAdapter, FeedAdapter.
      * Currently loading basically all (MAX_TRUMPET) Trumpets. This won't scale obviously so will need to future-proof at some point.
      */
     private void loadListViewData(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.orderByDescending("createdAt");
         query.setLimit(MAX_TRUMPETS);
+        query.whereDoesNotExist("replyTrumpetID");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {
@@ -152,6 +169,10 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         });
     }
 
+    /**
+     * Launches the ScrollListener attached to feedListView that shows and hides the SubmitBarFragment as user scrolls up and down.
+     * @param submitBarFragment The Fragment at the bottom of the screen that shows and hides with user scrolling.
+     */
     private void startScrollListener(final Fragment submitBarFragment){
         feedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -162,18 +183,18 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
                 // TODO Auto-generated method stub
 
                 if (scrollState == 0)
-                    Log.i("a", "scrolling stopped...");
+                    Log.i("ScrollListener", "scrolling stopped...");
 
 
                 if (view.getId() == feedListView.getId()) {
                     final int currentFirstVisibleItem = feedListView.getFirstVisiblePosition();
                     if (currentFirstVisibleItem > lastFirstVisibleItem) {
                         isScrollingUp = false;
-                        Log.i("a", "scrolling down...");
+                        Log.i("ScrollListener", "scrolling down...");
                         hideSubmitBarFragment(submitBarFragment);
                     } else if (currentFirstVisibleItem < lastFirstVisibleItem) {
                         isScrollingUp = true;
-                        Log.i("a", "scrolling up...");
+                        Log.i("ScrollListener", "scrolling up...");
                         showSubmitBarFragment(submitBarFragment);
                     }
 
@@ -200,22 +221,22 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     /**
      * Shows the Submit Bar Fragment. Runs when user begins scrolling up.
-     * TODO ensure that this method of providing Fragment doesn't cause any issues. Should be okay.
      */
     private void showSubmitBarFragment(Fragment submitBarFragment){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
         ft.show(submitBarFragment);
+        ft.commit();
     }
 
     /**
      * Hides the Submit Bar Fragment. Runs when user begins scrolling down.
-     * TODO ensure that this method of providing Fragment doesn't cause any issues. Should be okay.
      */
     private void hideSubmitBarFragment(Fragment submitBarFragment){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
         ft.hide(submitBarFragment);
+        ft.commit();
     }
 
 
