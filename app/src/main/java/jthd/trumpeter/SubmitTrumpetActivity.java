@@ -1,5 +1,6 @@
 package jthd.trumpeter;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private String replyUsername;
     private int replyTrumpetID;
+    private String replyObjectID;
+    private boolean inView;
 
 
     @Override
@@ -55,11 +58,26 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
                 if (replyUsername == null) {
                     SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
                     // This finish call should return user to FeedActivity
+                    Intent resultIntent = new Intent();
+                    setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 } else {
-                    SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
-                    // This finish call should return user to FeedActivity or ViewTrumpetActivity, depending on which reply button was pushed
-                    finish();
+                    // Reply initiated from a detailedTrumpet, already in Activity to view; just finish and refresh
+                    UpdateTrumpetManager.updateReplyCount(replyTrumpetID);
+                    if (inView = true){
+                        SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
+                        // This finish call should return user to FeedActivity or ViewTrumpetActivity, depending on which reply button was pushed
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+
+                    // Reply initiated from a regular list TrumpetView, so launch relevant ViewTrumpetActivity for replied to Trumpet
+                    } else {
+                        Intent intent = new Intent(SubmitTrumpetActivity.this, ViewTrumpetActivity.class);
+                        intent.putExtra("objectID", replyObjectID);
+                        intent.putExtra("trumpetID", replyTrumpetID);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -81,8 +99,11 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         replyUsername = intent.getStringExtra("trumpetUsername");
         if (replyUsername != null){
             replyTrumpetID = intent.getIntExtra("trumpetID", -1);
+            replyObjectID = intent.getStringExtra("objectID");
+            // default true: if error occurs and inView not present, safely just finish() after submission
+            inView = intent.getBooleanExtra("inView", true);
             trumpetEditText.setText("@" + replyUsername);
-            trumpetEditText.setSelection(trumpetEditText.getText().length() + 1);
+            trumpetEditText.setSelection(trumpetEditText.getText().length());
         }
     }
 

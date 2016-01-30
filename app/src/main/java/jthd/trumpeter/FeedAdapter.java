@@ -53,6 +53,18 @@ public class FeedAdapter extends ArrayAdapter<ParseObject> {
         return trumpetList.get(arg0).getInt("trumpetID");
     }
 
+    @Override
+    public boolean areAllItemsEnabled()
+    {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled(int arg0)
+    {
+        return true;
+    }
+
 
 
     @Override

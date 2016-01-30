@@ -34,6 +34,7 @@ public final class SubmitTrumpetManager {
         //trumpet.put("retrumpeter", ""); Defaults to empty
         trumpet.put("retrumpets", 0);
         trumpet.put("likes", 0);
+        trumpet.put("replies", 0);
         // This query retrieves the next available Trumpet ID for the new Trumpet from the TrumpetCounter object and atomically increments the counter field.
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TrumpetCounter");
         query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -60,6 +61,7 @@ public final class SubmitTrumpetManager {
         retrumpet.put("retrumpeter", retrumpeter);
         retrumpet.put("retrumpets", trumpet.getInt("retrumpets") + 1);
         retrumpet.put("likes", trumpet.get("likes"));
+        retrumpet.put("replies", trumpet.get("replies"));
         retrumpet.put("trumpetID", trumpet.get("trumpetID"));
         retrumpet.saveInBackground();
     }
@@ -80,6 +82,7 @@ public final class SubmitTrumpetManager {
         //trumpet.put("retrumpeter", ""); Defaults to empty
         trumpet.put("retrumpets", 0);
         trumpet.put("likes", 0);
+        trumpet.put("replies", 0);
         trumpet.put("replyTrumpetID", replyTrumpetID);
         // This query retrieves the next available Trumpet ID for the new Trumpet from the TrumpetCounter object and atomically increments the counter field.
         ParseQuery<ParseObject> query = ParseQuery.getQuery("TrumpetCounter");

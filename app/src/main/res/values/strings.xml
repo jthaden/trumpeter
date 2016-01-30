@@ -1,6 +1,7 @@
 <resources>
     <string name="parse_app_id">jadibgKgQBjKhvYdPhptYCM0C2mTWIYkXeYKhsuq</string>
     <string name="parse_client_key">AYj5VuAVO5eaCD2KTHR19BqJZiq0zA6xMMmAsj1d</string>
+    <string name="facebook_app_id">116915712024040</string>
     <string name="app_name">Trumpeter</string>
     <string name="emailAddressString">Email Address</string>
     <string name="emailAddressOrUsernameString">Email Address or Username</string>

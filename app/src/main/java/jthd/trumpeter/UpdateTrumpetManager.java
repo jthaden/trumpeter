@@ -51,5 +51,21 @@ public final class UpdateTrumpetManager {
         });
     }
 
+    public static void updateReplyCount(int trumpetID){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
+        query.whereEqualTo("trumpetID", trumpetID);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> trumpetList, ParseException e) {
+                if (e == null) {
+                    for (ParseObject trumpet : trumpetList){
+                        trumpet.increment("replies");
+                    }
+                } else {
+                    // There should always be at least one trumpet when this function is run, so this should never happen
+                }
+            }
+        });
+    }
+
 
 }

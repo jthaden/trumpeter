@@ -91,7 +91,7 @@ public class SubmitBarFragment extends Fragment {
      */
     private void toSubmitTrumpet(){
         Intent submitTrumpetIntent = new Intent(getActivity(), SubmitTrumpetActivity.class);
-        getActivity().startActivity(submitTrumpetIntent);
+        getActivity().startActivityForResult(submitTrumpetIntent, 0);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

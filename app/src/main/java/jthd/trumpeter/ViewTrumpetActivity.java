@@ -1,6 +1,8 @@
 package jthd.trumpeter;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -27,25 +29,55 @@ import java.util.List;
 
 public class ViewTrumpetActivity extends AppCompatActivity {
 
+
+    private final int MAX_TRUMPETS = 1000;
+
     private TrumpetView detailedTrumpetView;
     private ListView replyFeedListView;
     private Toolbar titleBar;
+    private SwipeRefreshLayout replyFeedSwipeLayout;
 
-    private int detailedTrumpetObjectID;
+    private String detailedTrumpetObjectID;
+    private int detailedTrumpetID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_trumpet);
         Intent intent = getIntent();
-        detailedTrumpetObjectID = intent.getIntExtra("objectID", -1);
+        detailedTrumpetObjectID = intent.getStringExtra("objectID");
+        detailedTrumpetID = intent.getIntExtra("trumpetID", -1);
         detailedTrumpetView = (TrumpetView)findViewById(R.id.detailedItemLayout);
         replyFeedListView = (ListView) findViewById(R.id.replyFeedListView);
+        replyFeedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.replyFeedSwipeLayout);
         // TODO Experimenting here by setting views in onCreate; seems like a better idea. If no issues, do it this way in all other activities where it makes sense
         setViews();
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         setSupportActionBar(titleBar);
+        replyFeedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                                                 @Override
+                                                 public void onRefresh() {
+                                                     // This method performs the actual data-refresh operation.
+                                                     // The method calls setRefreshing(false) when it's finished.
+                                                     refreshListView();
+                                                 }
+                                             }
+        );
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    replyFeedSwipeLayout.setRefreshing(true);
+                    refreshListView();
+                }
+                break;
+            }
+        }
     }
 
     @Override
@@ -62,8 +94,8 @@ public class ViewTrumpetActivity extends AppCompatActivity {
                 // launch Settings activity
                 return true;
             case R.id.refreshAction:
-                //feedSwipeLayout.setRefreshing(true);
-                //refreshListView();
+                replyFeedSwipeLayout.setRefreshing(true);
+                refreshListView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -84,7 +116,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
             public void done(ParseObject trumpet, ParseException e) {
                 if (e == null) {
                     detailedTrumpetView.showDetailedTrumpet(trumpet);
-                    loadReplyListViewData(trumpet.getInt("trumpetID"));
+                    loadReplyListViewData();
                 } else {
 
                 }
@@ -95,12 +127,11 @@ public class ViewTrumpetActivity extends AppCompatActivity {
     /**
      * Loads the list of Trumpets that are marked as reply Trumpets to the Trumpet being viewed. This relationship is maintained through the attribute replyTrumpetID,
      * which points to the trumpetID of the Trumpet being viewed.
-     * @param trumpetID The TrumpetID of the Trumpet that is being viewed, for use in matching with replyTrumpetIDs.
      */
-    private void loadReplyListViewData(int trumpetID){
+    private void loadReplyListViewData(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.orderByAscending("createdAt");
-        query.whereEqualTo("replyTrumpetID", trumpetID);
+        query.whereEqualTo("replyTrumpetID", detailedTrumpetID);
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {
@@ -112,6 +143,35 @@ public class ViewTrumpetActivity extends AppCompatActivity {
                 } else {
                     // Error occurred retrieving Trumpets; display message to user
                     Log.d("FeedManager", "Found no trumpets");
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Refreshes the reply data in the ListView's adapter and reloads the new data into the existing ListView TrumpetViews.
+     * Note: Call feedSwipeLayout.setRefreshing(true) before every call to this function. This function sets refreshing to false once refreshing
+     * is complete.
+     */
+    private void refreshListView(){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
+        query.orderByAscending("createdAt");
+        query.whereEqualTo("replyTrumpetID", detailedTrumpetID);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> trumpetList, ParseException e) {
+                if (e == null) {
+                    // Trumpets retrieved, get adapter and update its internal trumpetList
+                    Log.d("FeedActivity", Integer.toString(trumpetList.size()));
+                    Log.d("FeedActivity", "Found trumpets to refresh");
+                    FeedAdapter adapter = (FeedAdapter) replyFeedListView.getAdapter();
+                    adapter.getNewData(trumpetList);
+                    Log.d("FeedActivity", "Trumpets refreshed");
+                    adapter.notifyDataSetChanged();
+                    replyFeedSwipeLayout.setRefreshing(false);
+                } else {
+                    // Error occurred retrieving Trumpets; display message to user
+                    Log.d("FeedActivity", "Found no trumpets to refresh");
                 }
             }
         });

@@ -1,16 +1,21 @@
 package jthd.trumpeter;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.FindCallback;
@@ -33,14 +38,14 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     boolean isScrollingUp;
     int lastFirstVisibleItem;
-    boolean firstLoad;
+    //boolean firstLoad;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        firstLoad = true;
+        //firstLoad = true;
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         feedListView = (ListView) findViewById(R.id.feedListView);
         feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
@@ -53,14 +58,21 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         loadListViewData();
         setSupportActionBar(titleBar);
         feedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                            @Override
-                                            public void onRefresh() {
-                                                // This method performs the actual data-refresh operation.
-                                                // The method calls setRefreshing(false) when it's finished.
-                                                refreshListView();
-                                            }
-                                        }
+                                                 @Override
+                                                 public void onRefresh() {
+                                                     // This method performs the actual data-refresh operation.
+                                                     // The method calls setRefreshing(false) when it's finished.
+                                                     refreshListView();
+                                                 }
+                                             }
         );
+        feedListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParseObject trumpet = (ParseObject)feedListView.getItemAtPosition(position);
+                toViewTrumpetActivity(trumpet);
+            }
+        });
 
 
     }
@@ -74,20 +86,50 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         Log.d("FeedActivity", mUser.getEmail());
         Fragment submitBarFragment = launchSubmitBarFragment();
         startScrollListener(submitBarFragment);
+        /*
         // On first load, after call to loadListViewData(), firstLoad bool prevents refreshListView() from being called. On future onResume() calls
         // (e.g. after activity completion and return), firstLoad is false and the ListView is refreshed.
         // TODO This seemed to be causing some errors, but tricky to reproduce. Keep an eye out.
         if (!firstLoad && feedListView.getAdapter() != null){
-            //feedSwipeLayout.setRefreshing(true); Not sure I like displaying the refresh here. Keep it out unless it feels missing. Just seems more fluid w/o.
+            feedSwipeLayout.setRefreshing(true);
             refreshListView();
+            feedListView.post(new Runnable() {
+                @Override
+                public void run() {
+                    feedListView.smoothScrollToPosition(0); // TODO Double edged sword; good for submission, bad when viewing and backing
+                }
+            });
+
         }
         firstLoad = false;
+        */
 
         // TODO; need a good way to refresh. Call refresh function (that refresh button also uses) on resume, that somehow loads adapter with new info?
         // Make new adapter and load it? All that needs to be done is making a need FeedManager in FeedAdapter; function that just does that?
         // Clarify: Need to refresh when "reloading" it EXCEPT when backing onto it (in which case I should be at the same scroll position and data)
         // Back button should be onRestart(); may not need to do anything. All other forms of creation (I think) should reload data and start user at top
 
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (0) : {
+                if (resultCode == Activity.RESULT_OK) {
+                   refreshAndScrollToTop();
+                }
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_view_trumpet, menu);
+        return true;
     }
 
     @Override
@@ -100,8 +142,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
             // launch ProfileActivity
             // return true;
             case R.id.refreshAction:
-                feedSwipeLayout.setRefreshing(true);
-                refreshListView();
+                    refreshAndScrollToTop();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -113,9 +154,25 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     }
 
+    /**
+     * Refreshes the list data using refreshListView() and scrolls the ListView to the top using smoothScrollToPosition. This function is called
+     * when returning to FeedActivity after SUBMITTING a new Trumpet (NOT called when submission incomplete) and when the "refresh" ActionBar button
+     * is pressed.
+     */
+    private void refreshAndScrollToTop(){
+        feedSwipeLayout.setRefreshing(true);
+        refreshListView();
+        feedListView.post(new Runnable() {
+            @Override
+            public void run() {
+                feedListView.smoothScrollToPosition(0); // TODO Double edged sword; good for submission, bad when viewing and backing
+            }
+        });
+    }
+
 
     /**
-     *
+     * Refreshes the data in the ListView's adapter and reloads the new data into the existing ListView TrumpetViews.
      * Note: Call feedSwipeLayout.setRefreshing(true) before every call to this function. This function sets refreshing to false once refreshing
      * is complete.
      */
@@ -173,7 +230,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
      * Launches the ScrollListener attached to feedListView that shows and hides the SubmitBarFragment as user scrolls up and down.
      * @param submitBarFragment The Fragment at the bottom of the screen that shows and hides with user scrolling.
      */
-    private void startScrollListener(final Fragment submitBarFragment){
+    private void startScrollListener(final Fragment submitBarFragment) {
         feedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 // TODO Auto-generated method stub
@@ -237,6 +294,13 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
         ft.hide(submitBarFragment);
         ft.commit();
+    }
+
+    private void toViewTrumpetActivity(ParseObject trumpet){
+        Intent intent = new Intent(FeedActivity.this, ViewTrumpetActivity.class);
+        intent.putExtra("objectID", trumpet.getObjectId());
+        intent.putExtra("trumpetID", trumpet.getInt("trumpetID"));
+        startActivity(intent);
     }
 
 

@@ -5,7 +5,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/feedItemLayout"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:descendantFocusability="blocksDescendants">
 
     <ImageView
         tools:src="@drawable/default_profile_picture"
@@ -111,6 +112,32 @@
         android:layout_toRightOf="@+id/likeButton"
         android:layout_toEndOf="@+id/likeButton"
         android:layout_below="@+id/trumpetTextView"/>
+
+    <TextView
+        tools:text="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/replyCountTextView"
+        android:textColor="#FFFFFF"
+        android:paddingBottom="3dp"
+        android:layout_alignBottom="@+id/replyButton"
+        android:layout_toRightOf="@+id/replyButton"
+        android:layout_toEndOf="@+id/replyButton"
+        android:layout_below="@+id/trumpetTextView"/>
+
+    <TextView
+        tools:text="Thu, Jan 02 2014 22:38:35"
+        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dateTextView"
+        android:textColor="#FFFFFF"
+        android:gravity="center|right"
+        android:paddingRight="5dp"
+        android:layout_alignTop="@+id/usernameTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/trumpetTextView"/>
 
     <TextView
         tools:text="Retrumpeted by @jessethd"

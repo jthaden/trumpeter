@@ -37,4 +37,5 @@ dependencies {
         exclude module: 'bolts-android'
         exclude module: 'support-v4'
     }
+    compile 'com.parse:parsefacebookutils-v4-android:1.10.3@aar'
 }

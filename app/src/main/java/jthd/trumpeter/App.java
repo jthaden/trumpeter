@@ -4,7 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
+
+import com.facebook.FacebookSdk;
 
 
 
@@ -18,6 +19,7 @@ public class App extends Application {
         super.onCreate();
 
         Parse.enableLocalDatastore(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         // Register any ParseObject subclass. Must be done before calling Parse.initialize()
 
