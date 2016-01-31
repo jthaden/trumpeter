@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,11 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+
+/**
+ * Activity that facilitates Trumpet submission of all kinds. Can be launched for submission of a new Trumpet from SubmitBarFragment, or a reply Trumpet from
+ * a reply button in either a TrumpetView or detailedTrumpetView. Actual submission is handled in SubmitTrumpetManager.
+ */
 public class SubmitTrumpetActivity extends AppCompatActivity {
 
     private final int MAX_CHAR = 160;
@@ -51,34 +57,13 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         setProfilePicture();
         checkIfReply();
         trumpetEditText.addTextChangedListener(mTextEditorWatcher);
-        submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
+        setSpecificSubmitListener();
+        // When back button is pressed, simply finish() WITHOUT refreshing upon return.
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // If replyUsername is empty (not a reply request), submit new unlinked Trumpet. Otherwise, submit Trumpet as a reply with linked trumpetID
-                if (replyUsername == null) {
-                    SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
-                    // This finish call should return user to FeedActivity
-                    Intent resultIntent = new Intent();
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    finish();
-                } else {
-                    // Reply initiated from a detailedTrumpet, already in Activity to view; just finish and refresh
-                    UpdateTrumpetManager.updateReplyCount(replyTrumpetID);
-                    if (inView = true){
-                        SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
-                        // This finish call should return user to FeedActivity or ViewTrumpetActivity, depending on which reply button was pushed
-                        Intent resultIntent = new Intent();
-                        setResult(Activity.RESULT_OK, resultIntent);
-                        finish();
-
-                    // Reply initiated from a regular list TrumpetView, so launch relevant ViewTrumpetActivity for replied to Trumpet
-                    } else {
-                        Intent intent = new Intent(SubmitTrumpetActivity.this, ViewTrumpetActivity.class);
-                        intent.putExtra("objectID", replyObjectID);
-                        intent.putExtra("trumpetID", replyTrumpetID);
-                        startActivity(intent);
-                    }
-                }
+                Log.d("BLAH", "wtf");
+                SubmitTrumpetActivity.this.finish();
             }
         });
     }
@@ -107,6 +92,51 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Starts the "submit" listener on the submitTrumpetButton. Upon submission of regular Trumpet or reply Trumpet, decides whether to launch new Activity
+     * to view reply Trumpet or to simply return to the previous Activity (in the case of a new Trumpet from FeedActivity or when replying to the Trumpet being
+     * viewed in ViewTrumpetActivity) and refresh. Refreshing upon return is indicated by a setResult of RESULT_OK.
+     */
+    private void setSpecificSubmitListener(){
+        submitTrumpetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // If replyUsername is empty (not a reply request), submit new unlinked Trumpet. Otherwise, submit Trumpet as a reply with linked trumpetID
+                if (replyUsername == null) {
+                    Log.d("SubmitTrumpetActivity", "not a reply, just finish() and refresh");
+                    SubmitTrumpetManager.submitNewTrumpet(trumpetEditText.getText().toString(), user);
+                    // This finish call should return user to FeedActivity
+                    Intent resultIntent = new Intent();
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    finish();
+                } else {
+                    // Reply initiated from a detailedTrumpet, already in Activity to view; just finish and refresh
+                    //UpdateTrumpetManager.updateReplyCount(replyTrumpetID);
+                    if (inView == true){
+                        Log.d("SubmitTrumpetActivity", "should finish() and refresh");
+                        SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
+                        // This finish call should return user to FeedActivity or ViewTrumpetActivity, depending on which reply button was pushed
+                        Intent resultIntent = new Intent();
+                        setResult(Activity.RESULT_OK, resultIntent);
+                        finish();
+
+                        // Reply initiated from a regular list TrumpetView, so launch relevant ViewTrumpetActivity for replied to Trumpet
+                    } else {
+                        Log.d("SubmitTrumpetActivity", "should be launching viewTrumpet");
+                        SubmitTrumpetManager.submitReplyTrumpet(trumpetEditText.getText().toString(), user, replyTrumpetID);
+                        Intent intent = new Intent(SubmitTrumpetActivity.this, ViewTrumpetActivity.class);
+                        intent.putExtra("objectID", replyObjectID);
+                        intent.putExtra("trumpetID", replyTrumpetID);
+                        // Bool indicating that this launch of ViewTrumpetActivity IS post-reply submission, leading to a slight forced delay in loading
+                        // reply data to ensure that reply is successfully uploaded to Parse by loadtime
+                        intent.putExtra("fromReply", true);
+                        startActivity(intent);
+                    }
+                }
+            }
+        });
+    }
+
 
 
     /**
@@ -127,7 +157,7 @@ public class SubmitTrumpetActivity extends AppCompatActivity {
     }
 
     /**
-     * Watches the trumpetEditText and updates the charCountTextView with the remaining number of allowed characters whenever text is entered
+     * Watches the trumpetEditText and updates the charCountTextView with the remaining number of allowed characters whenever text is entered.
      */
     private final TextWatcher mTextEditorWatcher = new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

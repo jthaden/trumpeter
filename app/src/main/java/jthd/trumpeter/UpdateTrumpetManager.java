@@ -10,13 +10,19 @@ import com.parse.ParseQuery;
 import java.util.List;
 
 
-// TODO TrumpetUpdateManager?
+/**
+ * Static class that manages Trumpet update actions, e.g. updating retrumpet count, like count, and reply count.
+ */
 public final class UpdateTrumpetManager {
 
     private UpdateTrumpetManager(){
 
     }
 
+
+    /**
+     * Updates the retrumpet count for all Trumpets with trumpetID.
+     */
     public static void updateRetrumpetCount(int trumpetID){
         Log.d("UpdateTrumpetManager", "Updating ID: " + Integer.toString(trumpetID));
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
@@ -25,8 +31,12 @@ public final class UpdateTrumpetManager {
             public void done(List<ParseObject> trumpetList, ParseException e) {
                 if (e == null) {
                     Log.d("UpdateTrumpetManager", "Trumpets found to update: " + Integer.toString(trumpetList.size()));
+                    int count = 1;
                     for (ParseObject trumpet : trumpetList){
+                        Log.d("UpdateTrumpetManager", "Updating retrumpet count for trumpet #" + Integer.toString(count));
                         trumpet.increment("retrumpets");
+                        count++;
+                        trumpet.saveInBackground();
                     }
                 } else {
                     // There should always be at least one trumpet when this function is run, so this should never happen
@@ -35,6 +45,9 @@ public final class UpdateTrumpetManager {
         });
     }
 
+    /**
+     * Updates the like count for all Trumpets with trumpetID.
+     */
     public static void updateLikeCount(int trumpetID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.whereEqualTo("trumpetID", trumpetID);
@@ -43,6 +56,7 @@ public final class UpdateTrumpetManager {
                 if (e == null) {
                     for (ParseObject trumpet : trumpetList){
                         trumpet.increment("likes");
+                        trumpet.saveInBackground();
                     }
                 } else {
                     // There should always be at least one trumpet when this function is run, so this should never happen
@@ -51,6 +65,9 @@ public final class UpdateTrumpetManager {
         });
     }
 
+    /**
+     * Updates the reply count for all Trumpets with trumpetID.
+     */
     public static void updateReplyCount(int trumpetID){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Trumpet");
         query.whereEqualTo("trumpetID", trumpetID);
@@ -59,6 +76,7 @@ public final class UpdateTrumpetManager {
                 if (e == null) {
                     for (ParseObject trumpet : trumpetList){
                         trumpet.increment("replies");
+                        trumpet.saveInBackground();
                     }
                 } else {
                     // There should always be at least one trumpet when this function is run, so this should never happen

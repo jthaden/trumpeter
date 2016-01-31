@@ -44,7 +44,8 @@
         <activity
             android:name=".SubmitTrumpetActivity"
             android:label="@string/title_activity_submit_trumpet"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true" >
         </activity>
         <activity
             android:name=".ViewTrumpetActivity"

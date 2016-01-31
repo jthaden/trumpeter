@@ -2,6 +2,7 @@ package jthd.trumpeter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -42,6 +44,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
 
     private String detailedTrumpetObjectID;
     private int detailedTrumpetID;
+    private boolean fromReply;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
         Intent intent = getIntent();
         detailedTrumpetObjectID = intent.getStringExtra("objectID");
         detailedTrumpetID = intent.getIntExtra("trumpetID", -1);
+        fromReply = intent.getBooleanExtra("fromReply", true);
         detailedTrumpetView = (TrumpetView)findViewById(R.id.detailedItemLayout);
         replyFeedListView = (ListView) findViewById(R.id.replyFeedListView);
         replyFeedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.replyFeedSwipeLayout);
@@ -59,6 +63,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
         setViews();
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         setSupportActionBar(titleBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         replyFeedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                                       @Override
                                                       public void onRefresh() {
@@ -87,19 +92,34 @@ public class ViewTrumpetActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Upon returning from successful reply submission to the Trumpet currently being viewed, increment the reply counter of detailedTrumpet by 1 to reflect your new
+     * reply and refresh the replyListView.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (0) : {
                 if (resultCode == Activity.RESULT_OK) {
+                    detailedTrumpetView.incrementDetailedReplyCount();
                     replyFeedSwipeLayout.setRefreshing(true);
-                    refreshListView();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            refreshListView();
+                        }
+                    }, 300);
+
                 }
                 break;
             }
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,9 +128,19 @@ public class ViewTrumpetActivity extends AppCompatActivity {
         return true;
     }
 
+
+    /**
+     * Defines the ActionBar options. Currently have Back, which simply calls finish(), Refresh (always shown as icon) and Sign Out (always overflow menu).
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.signOutAction:
+                ParseUser.getCurrentUser().logOut();
+                toLoginActivity();
             case R.id.settingsAction:
                 // launch Settings activity
                 return true;
@@ -126,7 +156,8 @@ public class ViewTrumpetActivity extends AppCompatActivity {
 
     /**
      * Retrieve the calling Trumpet (given its object ID), load the detailed Trumpet View with its information, then query that Trumpet's replies and load the ListView
-     * with those reply Trumpets in ascending (most recent last) order.
+     * with those reply Trumpets in ascending (most recent last) order. Determines whether or not to wait 300 ms before loading based on source of launch; if
+     * launched post-reply, wait 300 ms for reply upload. If not, just load replies immediately.
      * As stated in class documentation, this function currently does an (inexpensive) lookup that isn't really necessary. Performance impact should be minor but
      * continue to think about options. Lack of TrumpetID also forces a nested query, which is a bit weird.
      */
@@ -137,7 +168,24 @@ public class ViewTrumpetActivity extends AppCompatActivity {
             public void done(ParseObject trumpet, ParseException e) {
                 if (e == null) {
                     detailedTrumpetView.showDetailedTrumpet(trumpet);
-                    loadReplyListViewData();
+                    // If a reply was just submitted before loading this ViewTrumpetActivity, need to wait a small amount of time to ensure that the reply has been uploaded
+                    // to Parse before loading reply data. Also, since detailedTrumpet was likely loaded before reply submission was processed, locally +1 the reply count.
+                    // UPDATE ON THIS: reply count seems to be updated on Parse before loading detailedTrumpet every time, so no need to locally update reply count.
+                    if (fromReply){
+                        //detailedTrumpetView.incrementDetailedReplyCount();
+                        final Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                // Do something after 5s = 5000ms
+                                loadReplyListViewData();
+                            }
+                        }, 300);
+                        // Otherwise, just load the reply data immediately
+                    } else {
+                        loadReplyListViewData();
+                    }
+
                 } else {
 
                 }
@@ -196,5 +244,14 @@ public class ViewTrumpetActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Returns to LoginActivity after successful sign-out. Flags clear the backstack so user cannot return without logging in again.
+     */
+    private void toLoginActivity(){
+        Intent intent = new Intent(ViewTrumpetActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

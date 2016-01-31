@@ -161,6 +161,7 @@ public class CreateAccountActivity extends AppCompatActivity{
      */
     private void toFeed(){
         Intent feedIntent = new Intent(CreateAccountActivity.this, FeedActivity.class);
+        feedIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         CreateAccountActivity.this.startActivity(feedIntent);
     }
 

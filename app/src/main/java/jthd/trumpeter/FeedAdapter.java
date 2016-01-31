@@ -86,6 +86,10 @@ public class FeedAdapter extends ArrayAdapter<ParseObject> {
         return view;
     }
 
+    /**
+     * Refresh method that resets the adapter's internal trumpetList with a new trumpetList.
+     * @param tList, the new List<ParseObject> of Trumpets that is to be loaded into the adapter.
+     */
     public void getNewData(List<ParseObject> tList){
         trumpetList = new ArrayList<ParseObject>(tList);
     }

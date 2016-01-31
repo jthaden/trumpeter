@@ -2,10 +2,10 @@ package jthd.trumpeter;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     private final int MAX_TRUMPETS = 1000;
 
-    private ParseUser mUser;
+    private ParseUser user;
 
     private Toolbar titleBar;
     private ListView feedListView;
@@ -40,17 +40,15 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
 
     boolean isScrollingUp;
     int lastFirstVisibleItem;
-    //boolean firstLoad;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        //firstLoad = true;
+        feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         feedListView = (ListView) findViewById(R.id.feedListView);
-        feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
         emptyTextView = (TextView) findViewById(R.id.emptyTextView);
         feedListView.setEmptyView(emptyTextView);
         /**
@@ -59,8 +57,10 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
          */
         // FeedManager feedManager = new FeedManager();
         // List<ParseObject> trumpetList = feedManager.getTrumpets();
-        loadListViewData();
         setSupportActionBar(titleBar);
+        feedSwipeLayout.setRefreshing(true);
+        loadListViewData();
+        feedSwipeLayout.setRefreshing(false);
         feedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                                                  @Override
                                                  public void onRefresh() {
@@ -86,43 +86,32 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
     @Override
     protected void onResume(){
         super.onResume();
-        mUser = ParseUser.getCurrentUser();
-        Log.d("FeedActivity", mUser.getEmail());
+        user = ParseUser.getCurrentUser();
+        Log.d("FeedActivity", user.getEmail());
         Fragment submitBarFragment = launchSubmitBarFragment();
         startScrollListener(submitBarFragment);
-        /*
-        // On first load, after call to loadListViewData(), firstLoad bool prevents refreshListView() from being called. On future onResume() calls
-        // (e.g. after activity completion and return), firstLoad is false and the ListView is refreshed.
-        // TODO This seemed to be causing some errors, but tricky to reproduce. Keep an eye out.
-        if (!firstLoad && feedListView.getAdapter() != null){
-            feedSwipeLayout.setRefreshing(true);
-            refreshListView();
-            feedListView.post(new Runnable() {
-                @Override
-                public void run() {
-                    feedListView.smoothScrollToPosition(0); // TODO Double edged sword; good for submission, bad when viewing and backing
-                }
-            });
-
-        }
-        firstLoad = false;
-        */
-
-        // TODO; need a good way to refresh. Call refresh function (that refresh button also uses) on resume, that somehow loads adapter with new info?
-        // Make new adapter and load it? All that needs to be done is making a need FeedManager in FeedAdapter; function that just does that?
-        // Clarify: Need to refresh when "reloading" it EXCEPT when backing onto it (in which case I should be at the same scroll position and data)
-        // Back button should be onRestart(); may not need to do anything. All other forms of creation (I think) should reload data and start user at top
-
     }
 
 
+    /**
+     * Upon returning from successful Trumpet submission, refresh the feedListView and scroll to the top.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode) {
             case (0) : {
                 if (resultCode == Activity.RESULT_OK) {
-                   refreshAndScrollToTop();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Do something after 5s = 5000ms
+                            Log.d("FeedActivity", "Returned, waiting to refresh");
+                            refreshAndScrollToTop();
+                        }
+                    }, 300);
+
                 }
                 break;
             }
@@ -136,12 +125,18 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         return true;
     }
 
+    /**
+     * Defines the ActionBar options. Currently have Refresh (always shown as icon) and Sign Out (always overflow menu).
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.settingsAction:
                 // launch Settings activity
                 return true;
+            case R.id.signOutAction:
+                ParseUser.getCurrentUser().logOut();
+                toLoginActivity();
             //case R.id.profileAction:
             // launch ProfileActivity
             // return true;
@@ -300,10 +295,25 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         ft.commit();
     }
 
+    /**
+     * Launches the ViewTrumpetActivity for the Trumpet that was pressed in the feedListView.
+     * @param trumpet, the Trumpet that is to be viewed in ViewTrumpetActivity.
+     */
     private void toViewTrumpetActivity(ParseObject trumpet){
         Intent intent = new Intent(FeedActivity.this, ViewTrumpetActivity.class);
         intent.putExtra("objectID", trumpet.getObjectId());
         intent.putExtra("trumpetID", trumpet.getInt("trumpetID"));
+        // Bool indicating that this launch of ViewTrumpetActivity is NOT post-reply submission, determines delay in loading reply data
+        intent.putExtra("fromReply", false);
+        startActivity(intent);
+    }
+
+    /**
+     * Returns to LoginActivity after successful sign-out. Flags clear the backstack so user cannot return without logging in again.
+     */
+    private void toLoginActivity(){
+        Intent intent = new Intent(FeedActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 

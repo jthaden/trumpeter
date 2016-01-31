@@ -36,12 +36,11 @@
             android:id="@+id/retrumpetTextView"
             android:paddingTop="6dp"
             android:layout_alignTop="@+id/detailedItemLayout"
-            android:layout_above="@+id/profile"
             android:layout_alignLeft="@+id/usernameTextView"/>
 
         <TextView
             tools:text="10 Replies"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="wrap_content"
             android:id="@+id/replyCountTextView"
             android:textColor="#FFFFFF"
@@ -54,16 +53,15 @@
 
         <TextView
             tools:text="30 Retrumpets"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/retrumpetCountTextView"
             android:textColor="#FFFFFF"
             android:paddingBottom="6dp"
             android:paddingLeft="2dp"
             android:textSize="14sp"
-            android:layout_below="@+id/trumpetTextView"
-            android:layout_toRightOf="@+id/retrumpetButton"
-            android:layout_toEndOf="@+id/retrumpetButton"/>
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/trumpetTextView"/>
 
         <View
             android:layout_width="match_parent"
@@ -73,6 +71,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/retrumpetCountTextView"/>
+
 
         <ImageButton
             android:layout_width="35dp"
@@ -97,8 +96,7 @@
             android:adjustViewBounds="true"
             android:background="#00FFFFFF"
             android:layout_above="@+id/detailedTrumpetSeparationLine"
-            android:layout_toRightOf="@+id/replyCountTextView"
-            android:layout_toEndOf="@+id/replyCountTextView"/>
+            android:layout_toLeftOf="@+id/retrumpetCountTextView"/>
 
         <TextView
             tools:text="55 Likes"
@@ -106,11 +104,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/likeCountTextView"
             android:textColor="#FFFFFF"
-            android:paddingLeft="1dp"
+            android:paddingRight="15dp"
             android:textSize="14sp"
+            android:gravity="right"
             android:layout_below="@+id/trumpetTextView"
-            android:layout_toRightOf="@+id/likeButton"
-            android:layout_toEndOf="@+id/likeButton"/>
+            android:layout_alignRight="@+id/trumpetTextView"/>
 
         <ImageButton
             android:layout_width="30dp"
@@ -121,11 +119,8 @@
             android:adjustViewBounds="true"
             android:background="#00FFFFFF"
             android:paddingTop="2dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginStart="18dp"
             android:layout_alignBottom="@+id/likeCountTextView"
-            android:layout_toRightOf="@+id/retrumpetCountTextView"
-            android:layout_toEndOf="@+id/retrumpetCountTextView"/>
+            android:layout_toLeftOf="@+id/likeCountTextView"/>
 
         <ImageView
             tools:src="@drawable/default_profile_picture"

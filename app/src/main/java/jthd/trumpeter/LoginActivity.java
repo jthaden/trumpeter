@@ -16,6 +16,9 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+/**
+ *
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText emailEditText;
@@ -43,14 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
         loginButton = (Button)findViewById(R.id.loginButton);
         createAccountButton = (Button)findViewById(R.id.createAccountButton);
-        // TODO login with facebook button here
-
-    }
-
-
-    @Override
-    protected void onResume(){
-        super.onResume();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,6 +59,16 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        emailEditText.requestFocus();
+        // TODO login with facebook button here
+
+    }
+
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
     }
 
 
@@ -164,10 +169,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Launches FeedActivity.
+     * Launches FeedActivity. Flags clear backstack so as to prevent the user from visiting LoginActivity or CreateAccountActivity without signing out.
      */
     private void toFeed(){
         Intent feedIntent = new Intent(LoginActivity.this, FeedActivity.class);
+        feedIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         LoginActivity.this.startActivity(feedIntent);
     }
 

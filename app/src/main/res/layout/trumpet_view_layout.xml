@@ -44,6 +44,7 @@
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"
         android:paddingLeft="8dp"
+        android:paddingBottom="2dp"
         android:textColor="@color/colorTrumpetText"
         />
 

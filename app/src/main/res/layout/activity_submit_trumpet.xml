@@ -36,7 +36,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:paddingRight="4dp"/>
+        android:paddingRight="4dp"
+        android:paddingTop="8dp"/>
 
     <EditText
         android:layout_width="wrap_content"

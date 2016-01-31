@@ -16,4 +16,7 @@
           app:showAsAction="ifRoom"
           android:title="Refresh"
           android:icon="@drawable/refresh_actionbar_button"/>
+    <item android:id="@+id/signOutAction"
+          app:showAsAction="never"
+          android:title="Sign Out"/>
 </menu>

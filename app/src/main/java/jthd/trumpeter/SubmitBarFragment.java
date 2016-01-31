@@ -12,12 +12,8 @@ import android.widget.Button;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link SubmitBarFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link SubmitBarFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment that manages the SubmitBar at the bottom of FeedActivity. User may press this bar to travel to SubmitTrumpetActivity for submission of
+ * a new Trumpet. This fragment fades in and out based on user's scroll in feedListView.
  */
 public class SubmitBarFragment extends Fragment {
 

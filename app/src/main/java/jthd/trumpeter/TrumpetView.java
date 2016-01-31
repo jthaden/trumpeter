@@ -3,6 +3,7 @@ package jthd.trumpeter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -20,8 +22,8 @@ import java.text.SimpleDateFormat;
 
 
 /**
- * Custom View class that manages the layout for each Trumpet, or item in the FeedActivity ListView. Performs strictly the "View" function
- * while the Managers (SubmitTrumpetManager and UpdateTrumpetManager) handle the Model.
+ * Custom View class that manages the layout for each Trumpet, or item in the FeedActivity ListView. Also manages the slightly modified "detailedTrumpetView"
+ * layout in ViewTrumpetActivity. Performs strictly the "View" function while the Managers (SubmitTrumpetManager and UpdateTrumpetManager) handle the Model.
  */
 
 public class TrumpetView extends RelativeLayout {
@@ -92,8 +94,21 @@ public class TrumpetView extends RelativeLayout {
      */
     public void showTrumpet(ParseObject showTrumpet) {
         trumpet = showTrumpet;
-        trumpetUser = (ParseUser) trumpet.get("user");
-        username = trumpetUser.getUsername();
+        trumpetUser = trumpet.getParseUser("user");
+        /*
+        try {
+            trumpetUser =  trumpet.fetchIfNeeded().getParseUser("user");
+
+        } catch (ParseException e){
+
+        }
+        */
+        try {
+            username = trumpetUser.fetchIfNeeded().getUsername();
+        } catch (ParseException e){
+
+        }
+        //username = trumpetUser.getUsername();
         text = (String) trumpet.get("text");
         retrumpet = (boolean) trumpet.get("retrumpet");
         retrumpets = trumpet.getInt("retrumpets");
@@ -118,12 +133,14 @@ public class TrumpetView extends RelativeLayout {
         replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Picasso.with(v.getContext()).load(R.drawable.reply_arrow_pressed).into(replyButton);
                 toSubmitTrumpetActivityReply(false);
             }
         });
         retrumpetButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Picasso.with(v.getContext()).load(R.drawable.retrumpet_pressed).into(retrumpetButton);
                 retrumpetCountTextView.setText(Integer.toString(retrumpets + 1));
                 // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
                 SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
@@ -132,6 +149,7 @@ public class TrumpetView extends RelativeLayout {
         likeButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Picasso.with(v.getContext()).load(R.drawable.like_pressed).into(likeButton);
                 likeCountTextView.setText(Integer.toString(likes + 1));
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
@@ -162,7 +180,7 @@ public class TrumpetView extends RelativeLayout {
             retrumpetTextView.setVisibility(View.GONE);
         }
         setProfilePicture(400, 400);
-        usernameTextView.setText("@" + username);
+        usernameTextView.setText(username); // TODO @ here?
         trumpetTextView.setText(text);
         DateFormat df = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
         dateTextView.setText(df.format(trumpet.getCreatedAt()));
@@ -172,6 +190,7 @@ public class TrumpetView extends RelativeLayout {
         replyButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Picasso.with(v.getContext()).load(R.drawable.reply_arrow_pressed).into(replyButton);
                 toSubmitTrumpetActivityReply(true);
             }
         });
@@ -179,6 +198,7 @@ public class TrumpetView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 retrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
+                //Picasso.with(v.getContext()).load(R.drawable.retrumpet_pressed).into(retrumpetButton);
                 // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
                 SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
             }
@@ -187,10 +207,20 @@ public class TrumpetView extends RelativeLayout {
             @Override
             public void onClick(View v) {
                 likeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
+                //Picasso.with(v.getContext()).load(R.drawable.like_pressed).into(likeButton);
                 UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
             }
         });
 
+
+    }
+
+    /**
+     * Increments the replyCount of the detailedTrumpet in ViewTrumpetActivity by 1 to represent a new reply Trumpet locally submitted.
+     */
+    public void incrementDetailedReplyCount(){
+        int newReplyCount = (replyCountTextView.getText().charAt(0) - '0') + 1;
+        replyCountTextView.setText(Integer.toString(newReplyCount) + " Replies");
     }
 
     /**
@@ -202,11 +232,11 @@ public class TrumpetView extends RelativeLayout {
             // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
             ParseFile profilePicture = trumpetUser.getParseFile("profilePicture");
             // TODO Change context to getContext() and make sure it works the same way
-            Picasso.with(App.getAppContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(x, y).into(profilePictureImageView);
+            Picasso.with(getContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(x, y).into(profilePictureImageView);
         } else {
             // Asynchronously optimizes and loads the default profile picture.
             // TODO Change context to getContext() and make sure it works the same way
-            Picasso.with(App.getAppContext()).load(R.drawable.default_profile_picture).resize(x, y).centerInside().into(profilePictureImageView);
+            Picasso.with(getContext()).load(R.drawable.default_profile_picture).resize(x, y).centerInside().into(profilePictureImageView);
 
         }
     }
