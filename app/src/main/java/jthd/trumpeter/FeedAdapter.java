@@ -34,7 +34,6 @@ public class FeedAdapter extends ArrayAdapter<ParseObject> {
         super(context, resource, data);
         trumpetList = new ArrayList<ParseObject>(data);
         this.context = context;
-        // Do I need to do anything with context or resource in this class?
     }
 
     @Override

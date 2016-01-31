@@ -22,6 +22,7 @@
     <string name="whatsGoingOnString">What\'s going on?</string>
     <string name="trumpetString">Trumpet</string>
     <string name="notifications">Notifications</string>
+    <string name="emptyTextViewString">No replies!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_create_account">Create an Account</string>

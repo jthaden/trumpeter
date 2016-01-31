@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,6 +36,7 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
     private Toolbar titleBar;
     private ListView feedListView;
     private SwipeRefreshLayout feedSwipeLayout;
+    private TextView emptyTextView;
 
     boolean isScrollingUp;
     int lastFirstVisibleItem;
@@ -49,6 +51,8 @@ public class FeedActivity extends AppCompatActivity implements SubmitBarFragment
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         feedListView = (ListView) findViewById(R.id.feedListView);
         feedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.feedSwipeLayout);
+        emptyTextView = (TextView) findViewById(R.id.emptyTextView);
+        feedListView.setEmptyView(emptyTextView);
         /**
          * Waiting on FeedManager concept. Need to verify how to save List<ParseObject> data from a Callback inner class and return it in a function,
          * or I'll have to do all similar queries like this.

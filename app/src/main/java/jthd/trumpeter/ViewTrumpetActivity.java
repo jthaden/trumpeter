@@ -9,7 +9,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -36,6 +38,7 @@ public class ViewTrumpetActivity extends AppCompatActivity {
     private ListView replyFeedListView;
     private Toolbar titleBar;
     private SwipeRefreshLayout replyFeedSwipeLayout;
+    private TextView emptyTextView;
 
     private String detailedTrumpetObjectID;
     private int detailedTrumpetID;
@@ -50,19 +53,37 @@ public class ViewTrumpetActivity extends AppCompatActivity {
         detailedTrumpetView = (TrumpetView)findViewById(R.id.detailedItemLayout);
         replyFeedListView = (ListView) findViewById(R.id.replyFeedListView);
         replyFeedSwipeLayout = (SwipeRefreshLayout) findViewById(R.id.replyFeedSwipeLayout);
+        emptyTextView = (TextView) findViewById(R.id.emptyTextView);
+        replyFeedListView.setEmptyView(emptyTextView);
         // TODO Experimenting here by setting views in onCreate; seems like a better idea. If no issues, do it this way in all other activities where it makes sense
         setViews();
         titleBar = (Toolbar) findViewById(R.id.titleBar);
         setSupportActionBar(titleBar);
         replyFeedSwipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                                                 @Override
-                                                 public void onRefresh() {
-                                                     // This method performs the actual data-refresh operation.
-                                                     // The method calls setRefreshing(false) when it's finished.
-                                                     refreshListView();
-                                                 }
-                                             }
+                                                      @Override
+                                                      public void onRefresh() {
+                                                          // This method performs the actual data-refresh operation.
+                                                          // The method calls setRefreshing(false) when it's finished.
+                                                          refreshListView();
+                                                      }
+                                                  }
         );
+        // Manually defines OnScrollListener for replyFeedListView in order for SwipeRefreshLayout to have more than one child (e.g. for empty TextView).
+        // Swiping to refresh is enabled when top row being shown is the top-most position, and disabled when it isn't.
+        replyFeedListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int topRowVerticalPosition =
+                        (replyFeedListView == null || replyFeedListView.getChildCount() == 0) ?
+                                0 : replyFeedListView.getChildAt(0).getTop();
+                replyFeedSwipeLayout.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+            }
+        });
 
     }
 
