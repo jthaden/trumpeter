@@ -4,6 +4,11 @@ Trumpeter
 
 All submitted Trumpets are currently public (viewable by all users).
 
+
+#### Download on Google Play
+<!-- edit this image location -->
+[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=jthd.trumpeter)
+
 #### Screenshots
 
 <a href="url"><img src="http://i.imgur.com/ENNvqTp.png" align="left" height="720" width="405" ></a>
@@ -12,9 +17,9 @@ All submitted Trumpets are currently public (viewable by all users).
 <a href="url"><img src="http://i.imgur.com/RE0twf6.png" align="left" height="720" width="405" ></a>
 
 
-#### Download on Google Play
-<!-- edit this image location -->
-[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=jthd.trumpeter)
+
+
+
 
 ## Contributors
 
