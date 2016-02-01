@@ -5,11 +5,12 @@ Trumpeter
 All submitted Trumpets are currently public (viewable by all users).
 
 #### Screenshots
-![Screenshot Android](http://i.imgur.com/ENNvqTp.png "screenshot Android")
-![Screenshot Android](http://i.imgur.com/UP87QcN.png "screenshot Android")
-![Screenshot Android](http://i.imgur.com/eYSfGmw.png "screenshot Android")
-![Screenshot Android](http://i.imgur.com/FW9y9Pq.png "screenshot Android")
-![Screenshot Android](http://i.imgur.com/RE0twf6.png "screenshot Android")
+
+<a href="url"><img src="http://i.imgur.com/ENNvqTp.png" align="left" height="720" width="405" ></a>
+<a href="url"><img src="http://i.imgur.com/UP87QcN.png" align="left" height="720" width="405" ></a>
+<a href="url"><img src="http://i.imgur.com/eYSfGmw.png" align="left" height="720" width="405" ></a>
+<a href="url"><img src="http://i.imgur.com/RE0twf6.png" align="left" height="720" width="405" ></a>
+
 
 #### Download on Google Play
 <!-- edit this image location -->
