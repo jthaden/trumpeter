@@ -5,18 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.parse.GetDataCallback;
+import com.parse.GetFileCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -226,18 +230,22 @@ public class TrumpetView extends RelativeLayout {
     /**
      * Sets the user's profile picture asynchronously with Picasso. If no profile picture has been uploaded, use default.
      */
-    private void setProfilePicture(int x, int y){
+    private void setProfilePicture(final int x, final int y){
         // if profilePicture is not null (a profile picture has been uploaded), use it. Otherwise, use default
-        if (trumpetUser.getParseFile("profilePicture") != null){
+        if (trumpetUser.getParseFile("profilePicture") != null) {
+            Log.d("TrumpetView", "Loading custom profile picture");
             // Asynchronously optimizes and loads the user's profile picture. Loads the default profile picture as a placeholder.
             ParseFile profilePicture = trumpetUser.getParseFile("profilePicture");
-            // TODO Change context to getContext() and make sure it works the same way
-            Picasso.with(getContext()).load(profilePicture.getUrl()).placeholder(R.drawable.default_profile_picture).resize(x, y).into(profilePictureImageView);
+            profilePicture.getFileInBackground(new GetFileCallback() {
+                @Override
+                public void done(File file, ParseException e) {
+                    Picasso.with(getContext()).load(file).placeholder(R.drawable.default_profile_picture).resize(x, y).into(profilePictureImageView);
+                }
+            });
         } else {
+            Log.d("TrumpetView", "Loading default profile picture");
             // Asynchronously optimizes and loads the default profile picture.
-            // TODO Change context to getContext() and make sure it works the same way
             Picasso.with(getContext()).load(R.drawable.default_profile_picture).resize(x, y).centerInside().into(profilePictureImageView);
-
         }
     }
 

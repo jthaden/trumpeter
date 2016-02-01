@@ -44,33 +44,54 @@
             android:layout_height="wrap_content"
             android:id="@+id/replyCountTextView"
             android:textColor="#FFFFFF"
-            android:paddingBottom="3dp"
+            android:paddingTop="4dp"
             android:paddingLeft="1dp"
             android:paddingRight="15dp"
             android:layout_below="@+id/trumpetTextView"
             android:layout_toRightOf="@+id/replyButton"
+            android:layout_alignBottom="@+id/retrumpetLayout"
             />
 
-        <TextView
-            tools:text="30 Retrumpets"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/retrumpetCountTextView"
-            android:textColor="#FFFFFF"
-            android:paddingBottom="6dp"
-            android:paddingLeft="2dp"
-            android:textSize="14sp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/trumpetTextView"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:id="@+id/detailedTrumpetSeparationLine"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/retrumpetCountTextView"/>
+        <LinearLayout
+            android:id="@+id/retrumpetLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/trumpetTextView"
+            android:orientation = "horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingLeft="2dp"
+            android:weightSum="1">
+
+
+            <ImageButton
+                android:layout_width="37dp"
+                android:layout_height="39dp"
+                android:id="@+id/retrumpetButton"
+                android:src="@drawable/retrumpet"
+                android:scaleType="centerInside"
+                android:adjustViewBounds="true"
+                android:background="#00FFFFFF"
+                android:paddingBottom="12dp"
+                android:paddingLeft="5dp"
+                android:layout_above="@+id/detailedTrumpetSeparationLine"
+                android:layout_toLeftOf="@+id/retrumpetCountTextView"
+                />
+
+            <TextView
+                tools:text="30 Retrumpets"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:id="@+id/retrumpetCountTextView"
+                android:textColor="#FFFFFF"
+                android:paddingTop="4dp"
+                android:paddingLeft="3dp"
+                android:textSize="14sp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/trumpetTextView"/>
+
+        </LinearLayout>
+
 
 
         <ImageButton
@@ -82,21 +103,9 @@
             android:adjustViewBounds="true"
             android:background="#00FFFFFF"
             android:paddingLeft="5dp"
-            android:paddingBottom="2dp"
-            android:layout_alignTop="@+id/retrumpetButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"/>
+            android:paddingBottom="6dp"
+            android:layout_alignTop="@+id/replyCountTextView"/>
 
-        <ImageButton
-            android:layout_width="35dp"
-            android:layout_height="30dp"
-            android:id="@+id/retrumpetButton"
-            android:src="@drawable/retrumpet"
-            android:scaleType="centerInside"
-            android:adjustViewBounds="true"
-            android:background="#00FFFFFF"
-            android:layout_above="@+id/detailedTrumpetSeparationLine"
-            android:layout_toLeftOf="@+id/retrumpetCountTextView"/>
 
         <TextView
             tools:text="55 Likes"
@@ -105,10 +114,12 @@
             android:id="@+id/likeCountTextView"
             android:textColor="#FFFFFF"
             android:paddingRight="15dp"
+            android:paddingTop="4dp"
             android:textSize="14sp"
             android:gravity="right"
             android:layout_below="@+id/trumpetTextView"
-            android:layout_alignRight="@+id/trumpetTextView"/>
+            android:layout_alignRight="@+id/trumpetTextView"
+            android:layout_alignBottom="@+id/retrumpetLayout"/>
 
         <ImageButton
             android:layout_width="30dp"
@@ -118,9 +129,11 @@
             android:scaleType="centerInside"
             android:adjustViewBounds="true"
             android:background="#00FFFFFF"
-            android:paddingTop="2dp"
+            android:paddingBottom="9dp"
+            android:paddingTop="6dp"
             android:layout_alignBottom="@+id/likeCountTextView"
-            android:layout_toLeftOf="@+id/likeCountTextView"/>
+            android:layout_toLeftOf="@+id/likeCountTextView"
+            android:layout_alignTop="@+id/likeCountTextView"/>
 
         <ImageView
             tools:src="@drawable/default_profile_picture"
@@ -229,6 +242,14 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:id="@+id/detailedTrumpetSeparationLine"
+        android:layout_alignBottom="@+id/detailedItemLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 
 

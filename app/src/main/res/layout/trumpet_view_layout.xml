@@ -10,14 +10,16 @@
 
     <ImageView
         tools:src="@drawable/default_profile_picture"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:id="@+id/profilePictureImageView"
         android:layout_below="@+id/retrumpetTextView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
 
     <TextView
         tools:text="\@jessethd"
@@ -25,7 +27,7 @@
         android:layout_height="25dp"
         android:id="@+id/usernameTextView"
         android:gravity="center|left"
-        android:paddingLeft="8dp"
+        android:paddingLeft="3dp"
         android:textSize="16sp"
         android:textColor="@color/colorText"
         android:textStyle="bold"
@@ -34,7 +36,7 @@
         android:layout_toEndOf="@+id/profilePictureImageView"/>
 
     <TextView
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, um."
+        tools:text="I'm very glad to no longer be an elephant."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/trumpetTextView"
@@ -43,36 +45,36 @@
         android:layout_alignParentEnd="true"
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"
-        android:paddingLeft="8dp"
+        android:paddingLeft="3dp"
         android:paddingBottom="2dp"
         android:textColor="@color/colorTrumpetText"
         />
 
     <ImageButton
-        android:layout_width="35dp"
+        android:layout_width="28dp"
         android:layout_height="20dp"
         android:id="@+id/replyButton"
         android:src="@drawable/reply_arrow"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:background="#00FFFFFF"
-        android:paddingLeft="0dp"
         android:layout_alignLeft="@+id/trumpetTextView"
         android:layout_alignStart="@+id/trumpetTextView"
         android:layout_below="@+id/trumpetTextView"
-        android:paddingBottom="2dp"/>
+        android:paddingBottom="2dp"
+        android:paddingLeft="-5dp"/>
 
     <ImageButton
         android:layout_width="35dp"
-        android:layout_height="23dp"
+        android:layout_height="21dp"
         android:id="@+id/retrumpetButton"
         android:src="@drawable/retrumpet"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:background="#00FFFFFF"
+        android:layout_alignTop="@id/retrumpetCountTextView"
         android:layout_toLeftOf="@+id/likeButton"
-        android:layout_toStartOf="@+id/likeButton"
-        android:layout_alignBottom="@+id/replyButton"/>
+        android:layout_toStartOf="@+id/likeButton"/>
 
     <ImageButton
         android:layout_width="30dp"
@@ -84,7 +86,7 @@
         android:background="#00FFFFFF"
         android:layout_marginLeft="54dp"
         android:layout_marginStart="54dp"
-        android:paddingTop="2dp"
+        android:paddingTop="4dp"
         android:layout_below="@+id/trumpetTextView"
         android:layout_toRightOf="@+id/usernameTextView"
         android:layout_toEndOf="@+id/usernameTextView"/>
@@ -97,7 +99,6 @@
         android:textColor="#FFFFFF"
         android:paddingBottom="3dp"
         android:paddingLeft="2dp"
-        android:layout_alignBottom="@+id/retrumpetButton"
         android:layout_toRightOf="@+id/usernameTextView"
         android:layout_toEndOf="@+id/usernameTextView"
         android:layout_below="@+id/trumpetTextView"/>
@@ -150,7 +151,7 @@
         android:layout_alignEnd="@+id/trumpetTextView"
         android:layout_toRightOf="@+id/profilePictureImageView"
         android:layout_toEndOf="@+id/profilePictureImageView"
-        android:paddingLeft="8dp"
+        android:paddingLeft="3dp"
         android:paddingTop="2dp"/>
 
 </jthd.trumpeter.TrumpetView>
