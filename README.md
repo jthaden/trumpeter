@@ -5,11 +5,15 @@ Trumpeter
 All submitted Trumpets are currently public (viewable by all users).
 
 #### Screenshots
+![Screenshot Android](http://imgur.com/ENNvqTp "screenshot Android")
+![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
+![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
+![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
 ![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
 
 #### Download on Google Play
 <!-- edit this image location -->
-[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=com.package.path)
+[![Get it on Google Play](https://raw.github.com/repat/README-template/master/googleplay.png)](https://play.google.com/store/apps/details?id=jthd.trumpeter)
 
 ## Contributors
 
