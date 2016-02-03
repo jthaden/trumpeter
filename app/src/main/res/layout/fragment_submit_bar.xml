@@ -21,7 +21,7 @@
         />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:id="@+id/submitTrumpetButton"
         android:text="@string/whatsGoingOnString"
@@ -29,26 +29,14 @@
         style="?android:attr/borderlessButtonStyle"
         android:textSize="16sp"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/backgroundTextView2"
-        android:layout_alignStart="@+id/backgroundTextView2"
         android:typeface="serif"
         android:textAllCaps="false"
         android:textColor="@color/colorSubmitTrumpet"
-        android:layout_alignRight="@+id/backgroundTextView2"
-        android:layout_alignEnd="@+id/backgroundTextView2"
-        android:gravity="left|center_vertical"/>
+        android:gravity="left|center_vertical"
+        android:layout_marginLeft="12dp"/>
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/anchor"
-        android:id="@+id/backgroundTextView2"
-        android:background="@drawable/trumpet_lines"
-        android:layout_marginBottom="-558dp"
-        android:layout_marginLeft="10dp"
-        android:paddingRight="250dp"/>
 
 
     <View
@@ -56,5 +44,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerInParent="true" />
+
+    <View
+        android:layout_width="270dp"
+        android:layout_height="1dp"
+        android:background="@color/colorText"
+        android:id="@+id/detailedTrumpetSeparationLine"
+        android:layout_alignBottom="@+id/backgroundTextView"
+        android:layout_alignLeft="@+id/submitTrumpetButton"
+        android:layout_alignStart="@+id/submitTrumpetButton"
+        android:layout_marginBottom="8dp"/>
+
 
 </RelativeLayout>

@@ -126,7 +126,7 @@ public class TrumpetView extends RelativeLayout {
         } else {
             retrumpetTextView.setVisibility(View.GONE);
         }
-        setProfilePicture(180, 180);
+        setProfilePicture(250, 250);
         usernameTextView.setText(username);
         trumpetTextView.setText(text);
         DateFormat df = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");

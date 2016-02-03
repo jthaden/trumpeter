@@ -15,3 +15,13 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontoptimize
+-assumenosideeffects class android.util.Log { *; }
+-keep,includedescriptorclasses class com.parse.*{ *; }
+-dontwarn com.parse.**
+-dontwarn com.squareup.picasso.**
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep,includedescriptorclasses class com.facebook.*{ *; }
+-dontwarn com.facebook.**

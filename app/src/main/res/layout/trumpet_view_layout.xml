@@ -10,8 +10,8 @@
 
     <ImageView
         tools:src="@drawable/default_profile_picture"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:id="@+id/profilePictureImageView"
