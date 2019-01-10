@@ -166,56 +166,59 @@ public class TrumpetView extends RelativeLayout {
      * Reply button behavior: After replying to a detailedTrumpet (Trumpet already loaded in ViewTrumpetActivity), finish() and refresh reply data.
      * @param showTrumpet, the Trumpet ParseObject that contains all necessary information for a Trumpet to be displayed.
      */
-    public void showDetailedTrumpet(ParseObject showTrumpet){
+    public void showDetailedTrumpet(ParseObject showTrumpet) {
         trumpet = showTrumpet;
         trumpetUser = (ParseUser)trumpet.get("user");
-        username = trumpetUser.getUsername();
-        text = (String)trumpet.get("text");
-        retrumpet = (boolean)trumpet.get("retrumpet");
-        retrumpets = trumpet.getInt("retrumpets");
-        likes = trumpet.getInt("likes");
-        replies = trumpet.getInt("replies");
-        // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
-        if (retrumpet){
-            retrumpetTextView.setVisibility(View.VISIBLE);
-            retrumpeter = (String)trumpet.get("retrumpeter");
-            retrumpetTextView.setText("Retrumpeted by " + retrumpeter);
-        } else {
-            retrumpetTextView.setVisibility(View.GONE);
+        try {
+            username = trumpetUser.fetchIfNeeded().getUsername();
+            text = (String) trumpet.get("text");
+            retrumpet = (boolean) trumpet.get("retrumpet");
+            retrumpets = trumpet.getInt("retrumpets");
+            likes = trumpet.getInt("likes");
+            replies = trumpet.getInt("replies");
+            // If this Trumpet is a Retrumpet, display relevant Retrumpet information. Otherwise, hide the Retrumpet TextView
+            if (retrumpet) {
+                retrumpetTextView.setVisibility(View.VISIBLE);
+                retrumpeter = (String) trumpet.get("retrumpeter");
+                retrumpetTextView.setText("Retrumpeted by " + retrumpeter);
+            } else {
+                retrumpetTextView.setVisibility(View.GONE);
+            }
+            setProfilePicture(400, 400);
+            usernameTextView.setText(username); // TODO @ here?
+            trumpetTextView.setText(text);
+            DateFormat df = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
+            dateTextView.setText(df.format(trumpet.getCreatedAt()));
+            retrumpetCountTextView.setText(Integer.toString(retrumpets) + " Retrumpets");
+            likeCountTextView.setText(Integer.toString(likes) + " Likes");
+            replyCountTextView.setText(Integer.toString(replies) + " Replies");
+            replyButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Picasso.with(v.getContext()).load(R.drawable.reply_arrow_pressed).into(replyButton);
+                    toSubmitTrumpetActivityReply(true);
+                }
+            });
+            retrumpetButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    retrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
+                    //Picasso.with(v.getContext()).load(R.drawable.retrumpet_pressed).into(retrumpetButton);
+                    // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
+                    SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
+                }
+            });
+            likeButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    likeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
+                    //Picasso.with(v.getContext()).load(R.drawable.like_pressed).into(likeButton);
+                    UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
+                }
+            });
+        } catch (ParseException e) {
+            Log.d("TrumpetView", "Failed to fetch trumpet's parse user");
         }
-        setProfilePicture(400, 400);
-        usernameTextView.setText(username); // TODO @ here?
-        trumpetTextView.setText(text);
-        DateFormat df = new SimpleDateFormat("E, MMM dd yyyy HH:mm:ss");
-        dateTextView.setText(df.format(trumpet.getCreatedAt()));
-        retrumpetCountTextView.setText(Integer.toString(retrumpets) + " Retrumpets");
-        likeCountTextView.setText(Integer.toString(likes) + " Likes");
-        replyCountTextView.setText(Integer.toString(replies) + " Replies");
-        replyButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Picasso.with(v.getContext()).load(R.drawable.reply_arrow_pressed).into(replyButton);
-                toSubmitTrumpetActivityReply(true);
-            }
-        });
-        retrumpetButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                retrumpetCountTextView.setText(Integer.toString(retrumpets + 1) + " Retrumpets");
-                //Picasso.with(v.getContext()).load(R.drawable.retrumpet_pressed).into(retrumpetButton);
-                // Calls UpdateManager.updateRetrumpetCount and submits retrumpet
-                SubmitTrumpetManager.submitRetrumpet(trumpet, ParseUser.getCurrentUser().getString("username"));
-            }
-        });
-        likeButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                likeCountTextView.setText(Integer.toString(likes + 1) + " Likes");
-                //Picasso.with(v.getContext()).load(R.drawable.like_pressed).into(likeButton);
-                UpdateTrumpetManager.updateLikeCount(trumpet.getInt("trumpetID"));
-            }
-        });
-
 
     }
 

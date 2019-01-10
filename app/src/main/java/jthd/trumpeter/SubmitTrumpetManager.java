@@ -55,7 +55,7 @@ public final class SubmitTrumpetManager {
                     trumpetCounter.increment("nextTrumpetID");
                     trumpetCounter.saveInBackground();
                 } else {
-
+                    Log.d("SubmitTrumpetManager", "FAILED TO SUBMIT TRUMPET");
                 }
             }
         });
