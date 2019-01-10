@@ -4,8 +4,6 @@ Trumpeter
 
 All submitted Trumpets are currently public (viewable by all users).
 
-Temporarily non-operational due to ongoing database migration!
-
 
 #### Download on Google Play
 <!-- edit this image location -->
