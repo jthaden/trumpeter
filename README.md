@@ -1,6 +1,6 @@
 Trumpeter
 ======
-**Trumpeter** is an Android application that functions identically to Twitter. Create an account or log in with Facebook and submit "Trumpets", or 160-character messages, to all other users. Like, Retrumpet, or reply to a Trumpet to start a conversation!
+**Trumpeter** is an Android application that imitates Twitter's functionality. Create an account and submit "Trumpets", or 160-character messages, to all other users. Like, Retrumpet, or reply to a Trumpet to start a conversation!
 
 All submitted Trumpets are currently public (viewable by all users).
 
